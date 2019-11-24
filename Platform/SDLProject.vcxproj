@@ -156,6 +156,7 @@
     <Image Include="font.png" />
     <Image Include="jackson1.png" />
     <Image Include="me.png" />
+    <Image Include="temp.png" />
     <Image Include="test.png" />
     <Image Include="tileset.png" />
     <Image Include="walk.png" />
@@ -164,6 +165,7 @@
     <Media Include="background.mp3" />
     <Media Include="damage_1.wav" />
     <Media Include="fall_1.wav" />
+    <Media Include="footstep.wav" />
     <Media Include="jump_1.wav" />
     <Media Include="jump_2.wav" />
   </ItemGroup>

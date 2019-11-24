@@ -9,6 +9,7 @@ Entity::Entity()
     speed = 0;
     width = 1;
     height = 1;
+	footstep = Mix_LoadWAV("footstep.wav");
 }
 
 bool Entity::CheckCollision(Entity other)
@@ -185,7 +186,7 @@ void Entity::Jump()
 {
     if (collidedBottom)
     {
-        velocity.y = 7.0f;
+        velocity.y = 4.0f;
 		/*if (collidedBottom)
 		{
 			acceleration.x = 5.2f;
@@ -339,7 +340,134 @@ void Entity::DrawSpriteFromTextureAtlas(ShaderProgram* program, int index)
 	glDisableVertexAttribArray(program->texCoordAttribute);
 }
 
+bool Entity::facingLeft()
+{
+	if (currentAnim == idleLeft || currentAnim == walkLeft || currentAnim == jumpUpLeft || currentAnim == jumpDownLeft)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
 
+int Entity::stepping()
+{
+	if (currentAnim == walkRight || currentAnim == walkLeft)
+	{
+		return 1;
+	}
+	else if (currentAnim == runRight || currentAnim == runLeft)
+	{
+		return 2;
+	}
+	return 0;
+}
+
+void Entity::animate(float deltaTime)
+{
+	if (velocity.y > 0 && velocity.x >= 0)
+	{
+		animFrames = 7;
+		if (facingLeft() && velocity.x == 0)
+		{
+			currentAnim = jumpUpLeft;
+		}
+		else
+		{
+			currentAnim = jumpUpRight;
+		}
+	}
+	else if (velocity.y < 0 && velocity.x >= 0)
+	{
+		animFrames = 7;
+		if (facingLeft() && velocity.x == 0)
+		{
+			currentAnim = jumpDownLeft;
+		}
+		else
+		{
+			currentAnim = jumpDownRight;
+		}
+	}
+	else if (velocity.y > 0 && velocity.x < 0)
+	{
+		animFrames = 7;
+		currentAnim = jumpUpLeft;
+	}
+	else if (velocity.y < 0 && velocity.x < 0)
+	{
+		animFrames = 7;
+		currentAnim = jumpDownLeft;
+	}
+	else if (velocity.x > 4)
+	{
+		animFrames = 5;
+		currentAnim = runRight;
+	}
+	else if (velocity.x < -4)
+	{
+		animFrames = 5;
+		currentAnim = runLeft;
+	}
+	else if (velocity.x > 0)
+	{
+		animFrames = 7;
+		currentAnim = walkRight;
+	}
+	else if (velocity.x < 0)
+	{
+		animFrames = 7;
+		currentAnim = walkLeft;
+	}
+	else if (velocity.x == 0 && velocity.y == 0)
+	{
+		animFrames = 7;
+		if (facingLeft())
+		{
+			currentAnim = idleLeft;
+		}
+		else
+		{
+			currentAnim = idleRight;
+		}
+	}
+	else
+	{
+		animFrames = 7;
+		currentAnim = idleRight;
+	}
+	
+	animTime += deltaTime;
+	if (animTime >= 0.075f)
+	{
+		animTime = 0;
+		animIndex++;
+		if (stepping() == 1)
+		{
+			if (animIndex == 0 || animIndex == 4)
+			{
+				Mix_PlayChannel(-1, footstep, 0);
+			}
+		}
+		else if (stepping() == 2)
+		{
+			if (animIndex % 2 == 0)
+			{
+				Mix_PlayChannel(-1, footstep, 0);
+			}
+		}
+		if (currentAnim == jumpUpLeft || currentAnim == jumpUpRight)
+		{
+			animIndex = 2;
+		}
+		else if (animIndex >= animFrames)
+		{
+			animIndex = 0;
+		}
+	}
+}
 void Entity::Update(float deltaTime, Entity* objects, int objectCount, Map* map, Entity* enemies, int enemyCount)
 {
 	collidedTop = false;
@@ -361,55 +489,8 @@ void Entity::Update(float deltaTime, Entity* objects, int objectCount, Map* map,
 		CheckCollisionsX(enemies, enemyCount);
 		CheckCollisionsY(enemies, enemyCount);
 	}
-	if (velocity.x == 0 && velocity.y == 0)
-	{
-		if (currentAnim == walkRight)
-		{
-			currentAnim = idleRight;
-		}
-		else if (currentAnim == walkLeft)
-		{
-			currentAnim = idleLeft;
-		}
-	}
-	if (velocity.y > 0)
-	{
-		currentAnim = jumpUp;
-	}
-	else if (velocity.y < 0)
-	{
-		currentAnim = jumpDown;
-	}
-	else if (velocity.x > 0)
-	{
-		currentAnim = walkRight;
-	}
-	else if (velocity.x < 0)
-	{
-		currentAnim = walkLeft;
-	}
-	/*if (velocity.y > 0)
-	{
-		currentAnim = jumpUp;
-	}
-	if (currentAnim == jumpUp)
-	{
-		animFrames = 1;
-	}
-	else
-	{
-		animFrames = 6;
-	}*/
-	animTime += deltaTime;
-	if (animTime >= 0.075f)
-	{
-		animTime = 0;
-		animIndex++;
-		if (animIndex >= animFrames)
-		{
-			animIndex = 0;
-		}
-	}
+	
+	animate(deltaTime);
 }
 
 

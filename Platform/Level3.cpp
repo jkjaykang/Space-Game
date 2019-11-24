@@ -29,7 +29,7 @@ void Level3::Initialize() {
 	state.player.rows = 1;
 	state.player.walkRight = new int[7]{ 1, 2, 3, 4, 5, 6, 7 };
 	state.player.walkLeft = new int[7]{ 13, 14, 15, 16, 17, 18, 19 };
-	state.player.jumpUp = new int[1]{ 10 };
+	state.player.jumpUpRight = new int[1]{ 10 };
 	state.player.currentAnim = state.player.walkRight;
 	state.player.animFrames = 6;
 	state.nextLevel = -1;

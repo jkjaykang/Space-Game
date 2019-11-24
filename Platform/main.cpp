@@ -43,11 +43,14 @@ Mix_Music* background_1;
 Mix_Chunk* jump_1;
 Mix_Chunk* jump_2;
 
+Mix_Chunk* footstep;
+
 Mix_Chunk* fall_1;
 
 Effects* effects;
 
 int lives;
+
 
 void SwitchToScene(Scene* scene) {
 	currentScene = scene;
@@ -63,12 +66,14 @@ void Initialize() {
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096);
 
 	background_1 = Mix_LoadMUS("background.mp3");
-	Mix_PlayMusic(background_1, -1);
+	//Mix_PlayMusic(background_1, -1);
 
 	jump_1 = Mix_LoadWAV("jump_1.wav");
 	jump_2 = Mix_LoadWAV("jump_2.wav");
 
 	fall_1 = Mix_LoadWAV("fall_1.wav");
+
+	footstep = Mix_LoadWAV("footstep.wav");
 
     
 #ifdef _WINDOWS
@@ -83,7 +88,7 @@ void Initialize() {
     
     viewMatrix = glm::mat4(1.0f);
     modelMatrix = glm::mat4(1.0f);
-    projectionMatrix = glm::ortho(-1.25f, 1.25f, -0.9375f, 0.9375f, -1.0f, 1.0f);
+	projectionMatrix = glm::ortho(-5.0f, 5.0f, -3.75f, 3.75f, -1.0f, 1.0f);
     
     program.SetProjectionMatrix(projectionMatrix);
     program.SetViewMatrix(viewMatrix);
@@ -95,7 +100,7 @@ void Initialize() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    glClearColor(0.3f, 0.2f, 0.2f, 0.6f);
 
 	lives = 3;
 
@@ -126,11 +131,11 @@ void ProcessInput() {
 						int random = rand() % 2;
 						if (random > 0 && currentScene->state.player.isActive)
 						{
-							Mix_PlayChannel(-1, jump_1, 0);
+							//Mix_PlayChannel(-1, jump_1, 0);
 						}
 						else if (currentScene->state.player.isActive)
 						{
-							Mix_PlayChannel(-1, jump_2, 0);
+							//Mix_PlayChannel(-1, jump_2, 0);
 						}
 					}
                         break;
@@ -153,11 +158,19 @@ void ProcessInput() {
     }
     
 	currentScene->state.player.velocity.x = 0;
-    
+	//currentScene->state.player.velocity.x -= currentScene->state.player.velocity.x/2;
     // Check for pressed/held keys below
     const Uint8 *keys = SDL_GetKeyboardState(NULL);
     
-    if (keys[SDL_SCANCODE_A])
+	if (keys[SDL_SCANCODE_A] && keys[SDL_SCANCODE_LSHIFT])
+	{
+		currentScene->state.player.velocity.x = -5.0f;
+	}
+	else if (keys[SDL_SCANCODE_D] && keys[SDL_SCANCODE_LSHIFT])
+	{
+		currentScene->state.player.velocity.x = 5.0f;
+	}
+    else if (keys[SDL_SCANCODE_A])
     {
 		currentScene->state.player.velocity.x = -3.0f;
     }
@@ -192,10 +205,10 @@ void Update() {
 
 	effects->Update(FIXED_TIMESTEP);
 
-	/*if (currentScene->state.player.isActive == false);
-	{
-		Mix_PlayChannel(-1, fall_1, 0);
-	}*/
+	//if (currentScene->state.player.currentAnim == currentScene->state.player.walkRight);
+	//{
+	//	Mix_PlayChannel(-1, footstep, 0);
+	//}
 
 	if (currentScene->state.player.isActive == false)
 	{

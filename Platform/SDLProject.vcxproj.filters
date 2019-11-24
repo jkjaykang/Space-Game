@@ -103,6 +103,9 @@
     <Image Include="complete.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="temp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Media Include="damage_1.wav">
@@ -118,6 +121,9 @@
       <Filter>Resource Files</Filter>
     </Media>
     <Media Include="background.mp3">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="footstep.wav">
       <Filter>Resource Files</Filter>
     </Media>
   </ItemGroup>

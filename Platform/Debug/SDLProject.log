@@ -1,9 +1,2 @@
-﻿  Entity.cpp
-  Level1.cpp
-  Level2.cpp
-  Level3.cpp
-  Scene.cpp
-  StartScreen.cpp
-  main.cpp
-  Generating Code...
-  SDLProject.vcxproj -> C:\Users\Jay\Desktop\Platform\Debug\SDLProject.exe
+﻿  main.cpp
+  SDLProject.vcxproj -> C:\Users\jayka\Desktop\Space-Game\Platform\Debug\SDLProject.exe

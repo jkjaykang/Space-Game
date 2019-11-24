@@ -28,19 +28,28 @@ void Level1::Initialize() {
 	state.player.isStatic = false;
 	state.player.width = 1.0f;
 	state.player.position = glm::vec3(6, 0, 0);
-	state.player.acceleration = glm::vec3(0, -9.81f, 0);
-	state.player.textureID = Util::LoadTexture("complete.png");
-	state.player.cols = 8;
-	state.player.rows = 4;
-	state.player.idleRight = new int[7]{ 1, 2, 3, 4, 5, 6, 7 };
-	state.player.idleLeft = new int[7]{ 9, 10, 11, 12, 13, 14, 15 };
-	state.player.walkLeft = new int[7]{ 17, 18, 19, 20, 21, 22, 23 };
-	state.player.walkRight = new int[7]{ 25, 26, 27, 28, 29, 30, 31 };
-	state.player.jumpUp = new int[7]{ 17, 18, 19, 20, 21, 22, 23 };
-	state.player.jumpDown = new int[7]{ 9, 10, 11, 12, 13, 14, 15 };
-	//state.player.jumpUp = new int[1]{ 10 };
+	state.player.acceleration = glm::vec3(0, -3.711f, 0);
+	state.player.textureID = Util::LoadTexture("temp.png");
+	state.player.cols = 16;
+	state.player.rows = 8;
+	state.player.idleRight = new int[8]{ 1,2,3,4,5,6,7,8 };
+	state.player.walkRight = new int[8]{ 9,10,11,12,13,14,15,16};
+	state.player.idleLeft = new int[8]{ 17,18,19,20,21,22,23,24 };
+	state.player.walkLeft = new int[8]{ 25,26,27,28,29,30,31,32 };
+	state.player.jumpDownRight = new int[8]{ 33,34,35,36,37,38,39,40 };
+	//state.player.jumpDownRight = new int[8]{ 41,42,43,44,45,46,47,48};
+	state.player.jumpDownLeft = new int[8]{ 49,50,51,52,53,54,55,56 };
+	//state.player.jumpDownRight = new int[8]{ 57,58,59,60,61,62,63,64 };
+	state.player.jumpUpRight = new int[8]{ 65, 66, 67, 68, 69, 70, 71, 72 };
+	//	state.player.jumpDownRight = new int[8]{ 73,74,75,76,77,78,79,80 };
+	state.player.jumpUpLeft = new int[8]{ 81, 82, 83, 84, 85, 86, 87, 88 };
+	//state.player.jumpUpLeft = new int[8]{ 89, 90, 91, 92, 93, 94, 95, 96 };
+	state.player.runRight = new int[6]{ 97,98,99,100,101,102 };
+	//state.player.jumpUpLeft = new int[10]{ 103, 104, 105, 106, 107, 108, 109, 110, 111,112 };
+	state.player.runLeft = new int[6]{ 113,114,115,116,117,118 };
+	
 	state.player.currentAnim = state.player.idleRight;
-	state.player.animFrames = 6;
+	state.player.animFrames = 8;
 	state.nextLevel = -1;
 
 	for (int i = 0; i < JOOMBA_COUNT * 2; ++i) {
@@ -91,9 +100,9 @@ void Level1::Update(float deltaTime) {
 	for (int i = 0; i < JOOMBA_COUNT * 2; ++i) {
 		AOE_dmg_sprites[i].Update(deltaTime, &state.player, 1, state.map, state.enemies, ENEMIES_COUNT);
 	}
-	if (state.player.position.x > 23) {
+	/*if (state.player.position.x > 23) {
 		state.nextLevel = 2;
-	}
+	}*/
 }
 void Level1::Render(ShaderProgram* program) {
 	state.map->Render(program);
