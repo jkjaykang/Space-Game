@@ -14,6 +14,7 @@
 struct GameState {
     Entity player;
     Entity* enemies;
+    Entity* hazards;
     Map* map;
     int nextLevel;
 };

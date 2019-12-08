@@ -3,22 +3,24 @@
 #define LEVEL1_HEIGHT 8
 
 #define ENEMIES_COUNT 2
-#define JOOMBA_COUNT 1
+//#define JOOMBA_COUNT 1
+#define HAZARD_COUNT 2
+
 
 unsigned int level1_data[] =
 {
     3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,1,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,1,0,0,0,0,1,2,2,2,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1,0,0,0,0,1,1,1,1,1,1,1,2,2,2,2,1,0,0,1,0,0,0,1,0,0,1,2,1,0,0,0,0,0,0,0,
-    3, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,1,1,1,2,1,1,1,2,1,1,1,2,2,1,1,1,1,1,1,1,
+    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
     3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
 };
 
 Entity level1_enemies[ENEMIES_COUNT];
-Entity AOE_dmg_sprites[JOOMBA_COUNT * 2];
+Entity level1_hazards[HAZARD_COUNT];
 
 Entity sword;
 
@@ -64,40 +66,63 @@ void Level1::Initialize() {
     sword.timer = 25.0f;
     sword.textureID = Util::LoadTexture("papa.png");
     
-    
-    
-    for (int i = 0; i < JOOMBA_COUNT * 2; ++i) {
-        AOE_dmg_sprites[i].entityType = AOE_DAMAGE;
-        AOE_dmg_sprites[i].textureID = Util::LoadTexture("me.png");
-        AOE_dmg_sprites[i].isStatic = true;
-        AOE_dmg_sprites[i].isActive = false;
-        AOE_dmg_sprites[i].position = glm::vec3(0, 0, 0);
-        AOE_dmg_sprites[i].timer = 2.0f;
-    }
+
     
     state.enemies = level1_enemies;
     state.enemies[0].entityType = ENEMY;
-    state.enemies[0].textureID = Util::LoadTexture("evil.png");
-    state.enemies[0].acceleration = glm::vec3(0, -9.81f, 0);
+    state.enemies[0].textureID = Util::LoadTexture("fly.png");
+    state.enemies[0].acceleration = glm::vec3(0, 0, 0);
     state.enemies[0].isStatic = false;
-    state.enemies[0].position = glm::vec3(1, -2.25, 0);
-    state.enemies[0].aiState = WALKING;
-    state.enemies[0].aiType = JOOMBA;
-    //state.enemies[0].aiType = PAPARAZZI;
-    state.enemies[0].velocity = glm::vec3(1.0f, 0, 0);
-    state.enemies[0].timer = 100.0f + rand() % 200 + 1;
-    state.enemies[0].effects = AOE_dmg_sprites;
-    state.enemies[0].effects_num = JOOMBA_COUNT * 2;
-    
+    state.enemies[0].position = glm::vec3(3, -0.25f, 0);
+    state.enemies[0].aiState = IDLE;
+    state.enemies[0].aiType = FLY;
+    state.enemies[0].velocity = glm::vec3(0, -1, 0);
+    state.enemies[0].initialPosition = glm::vec3(3, -2.25, 0);
     
     state.enemies[1].entityType = ENEMY;
-    state.enemies[1].textureID = Util::LoadTexture("me.png");
-    state.enemies[1].acceleration = glm::vec3(0, -9.81f, 0);
+    state.enemies[1].textureID = Util::LoadTexture("orange.png");
+    state.enemies[1].acceleration = glm::vec3(0, -9.8f, 0);
     state.enemies[1].isStatic = false;
-    state.enemies[1].position = glm::vec3(2, -2.25, 0);
+    state.enemies[1].position = glm::vec3(4.0f, -2.25f, 0);
     state.enemies[1].aiState = WALKING;
-    state.enemies[1].aiType = PAPARAZZI;
-    state.enemies[1].velocity = glm::vec3(1.0f, 0, 0);
+    state.enemies[1].aiType = SPIKER;
+    state.enemies[1].velocity = glm::vec3(5.0f, 0, 0);
+    state.enemies[1].initialPosition = glm::vec3(3, -2.25, 0);
+    
+    
+    
+    
+    
+    
+    
+    state.hazards = level1_hazards;
+    state.hazards[0].entityType = HAZARD;
+    state.hazards[0].hzType = BOMB;
+    state.hazards[0].hzState = DEPLOY;
+    state.hazards[0].textureID = Util::LoadTexture("bomb.png");
+    state.hazards[0].acceleration = glm::vec3(0, -9.81f, 0);
+    state.hazards[0].isStatic = false;
+    state.hazards[0].isActive = false;
+    state.hazards[0].position = glm::vec3(3, -2.25, 0);
+    state.hazards[0].velocity = glm::vec3(0, -1, 0);
+    state.hazards[0].initialPosition = glm::vec3(3, -2.25, 0);
+    state.hazards[0].timer = 10.0f;
+    
+    state.hazards[1].entityType = HAZARD;
+    state.hazards[1].hzType = SPIKE;
+    state.hazards[1].hzState = TICKING;
+    state.hazards[1].textureID = Util::LoadTexture("papa_evil.png");
+    state.hazards[1].acceleration = glm::vec3(0, -9.81f, 0);
+    state.hazards[1].isStatic = false;
+    state.hazards[1].isActive = false;
+    state.hazards[1].position = glm::vec3(3, -2.25, 0);
+    state.hazards[1].velocity = glm::vec3(0, -1, 0);
+    state.hazards[1].initialPosition = glm::vec3(3, -2.25, 0);
+    state.hazards[1].timer = 10.0f;
+ 
+    
+    
+   
     
     
     
@@ -107,13 +132,15 @@ void Level1::Initialize() {
 }
 
 void Level1::Update(float deltaTime) {
-    state.player.Update(deltaTime, NULL, 0, state.map, state.enemies, ENEMIES_COUNT);
-    sword.Update(deltaTime, NULL, 0, state.map, state.enemies, ENEMIES_COUNT);
+    state.player.Update(deltaTime, NULL, 0, state.hazards, HAZARD_COUNT, state.map, state.enemies, ENEMIES_COUNT);
+    sword.Update(deltaTime, &(state.player), 1, state.hazards, HAZARD_COUNT, state.map, state.enemies, ENEMIES_COUNT);
     for (int i = 0; i < ENEMIES_COUNT; ++i) {
-        state.enemies[i].Update(deltaTime, &state.player, 1, state.map, state.enemies, ENEMIES_COUNT);
+        //state.enemies[i].Update(deltaTime, &state.player, 1, state.map, state.enemies, ENEMIES_COUNT);
+        state.enemies[i].Update(deltaTime, &state.player, 1, state.hazards, HAZARD_COUNT, state.map, state.enemies, ENEMIES_COUNT);
     }
-    for (int i = 0; i < JOOMBA_COUNT * 2; ++i) {
-        AOE_dmg_sprites[i].Update(deltaTime, &state.player, 1, state.map, state.enemies, ENEMIES_COUNT);
+    for (int i = 0; i < HAZARD_COUNT * 2; ++i) {
+        //AOE_dmg_sprites[i].Update(deltaTime, &state.player, 1, state.map, state.enemies, ENEMIES_COUNT);
+        state.hazards[i].Update(deltaTime, &state.player, 1, state.hazards, HAZARD_COUNT, state.map, state.enemies, ENEMIES_COUNT);
     }
     /*if (state.player.position.x > 23) {
      state.nextLevel = 2;
@@ -132,9 +159,9 @@ void Level1::Render(ShaderProgram* program) {
         
     }
     
-    for (int i = 0; i < JOOMBA_COUNT * 2; ++i) {
-        if (AOE_dmg_sprites[i].isActive == true) {
-            AOE_dmg_sprites[i].Render(program);
+    for (int i = 0; i < HAZARD_COUNT; ++i) {
+        if (state.hazards[i].isActive) {
+            state.hazards[i].Render(program);
         }
         
     }

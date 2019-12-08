@@ -4,6 +4,7 @@
 
 #define ENEMIES_COUNT 1
 #define JOOMBA_COUNT 1
+#define HAZARD_COUNT 1
 unsigned int level2_data[] =
 {
     3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -47,15 +48,21 @@ void Level2::Initialize() {
     //state.enemies[0].aiType = PAPARAZZI;
     state.enemies[0].velocity = glm::vec3(1.0f, 0, 0);
     state.enemies[0].timer = 100.0f + rand() % 200 + 1;
-    state.enemies[0].effects = AOE_dmg_sprites_2;
-    state.enemies[0].effects_num = JOOMBA_COUNT * 2;
+    //state.enemies[0].hazards = AOE_dmg_sprites_2;
+    //state.enemies[0].hazards_num = JOOMBA_COUNT * 2;
     
     state.nextLevel = -1;
 }
 void Level2::Update(float deltaTime) {
-    state.player.Update(deltaTime, NULL, 0, state.map, state.enemies, ENEMIES_COUNT);
+    state.player.Update(deltaTime, NULL, 0, state.hazards, HAZARD_COUNT, state.map, state.enemies, ENEMIES_COUNT);
+    sword.Update(deltaTime, &(state.player), 1, state.hazards, HAZARD_COUNT, state.map, state.enemies, ENEMIES_COUNT);
     for (int i = 0; i < ENEMIES_COUNT; ++i) {
-        state.enemies[i].Update(deltaTime, &state.player, 1, state.map, state.enemies, ENEMIES_COUNT);
+        //state.enemies[i].Update(deltaTime, &state.player, 1, state.map, state.enemies, ENEMIES_COUNT);
+        state.enemies[i].Update(deltaTime, &state.player, 1, state.hazards, HAZARD_COUNT, state.map, state.enemies, ENEMIES_COUNT);
+    }
+    for (int i = 0; i < HAZARD_COUNT * 2; ++i) {
+        //AOE_dmg_sprites[i].Update(deltaTime, &state.player, 1, state.map, state.enemies, ENEMIES_COUNT);
+        state.hazards[i].Update(deltaTime, &state.player, 1, state.hazards, HAZARD_COUNT, state.map, state.enemies, ENEMIES_COUNT);
     }
     
     if (state.player.position.x >= 15)

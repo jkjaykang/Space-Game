@@ -1,4 +1,5 @@
 #include "Entity.h"
+#include "Util.h"
 
 Entity::Entity()
 {
@@ -114,13 +115,41 @@ void Entity::CheckCollisionsX(Map* map)
     float penetration_y = 0;
     if (map->IsSolid(left, &penetration_x, &penetration_y) && velocity.x < 0) {
         position.x += penetration_x;
-        velocity.x = 0;
+        
+        if(entityType == ENEMY){
+            if (aiType == PAPARAZZI && aiState == RUNNING){
+                Jump();
+            }
+            else{
+                velocity *= -1;
+            }
+            
+        }
+        
+        else{
+            velocity.x = 0;
+        }
+        
         collidedLeft = true;
     }
     
     if (map->IsSolid(right, &penetration_x, &penetration_y) && velocity.x > 0) {
         position.x -= penetration_x;
-        velocity.x = 0;
+        
+        if(entityType == ENEMY){
+            if (aiType == PAPARAZZI && aiState == RUNNING){
+                Jump();
+            }
+            else{
+                velocity *= -1;
+            }
+            
+        }
+        
+        else{
+            velocity.x = 0;
+        }
+        
         collidedRight = true;
     }
 }
@@ -294,16 +323,17 @@ void Entity::AIJoomba(Entity player, Map* map) {
             int aoe_sprite_left = 2;
             bool left_sprite_done = false;
             bool right_sprite_done = false;
-            for (int i = 0; i < effects_num; ++i) {
+            /*
+            for (int i = 0; i < hazards_num; ++i) {
                 if (aoe_sprite_left > 0) {
-                    if (effects[i].isActive == false && left_sprite_done == false) {
-                        effects[i].isActive = true;
-                        effects[i].position = glm::vec3(position.x - 1.0f, position.y, 0);
+                    if (hazards[i].isActive == false && left_sprite_done == false) {
+                        hazards[i].isActive = true;
+                        hazards[i].position = glm::vec3(position.x - 1.0f, position.y, 0);
                         left_sprite_done = true;
                     }
-                    else if (effects[i].isActive == false && left_sprite_done == true) {
-                        effects[i].isActive = true;
-                        effects[i].position = glm::vec3(position.x + 1.0f, position.y, 0);
+                    else if (hazards[i].isActive == false && left_sprite_done == true) {
+                        hazards[i].isActive = true;
+                        hazards[i].position = glm::vec3(position.x + 1.0f, position.y, 0);
                         right_sprite_done = true;
                     }
                     aoe_sprite_left -= 1;
@@ -318,24 +348,238 @@ void Entity::AIJoomba(Entity player, Map* map) {
                 timer = 100.0f + rand() % 200 + 1;
                 aiState = WALKING;
                 velocity.x *= 1000.0f;
-                for (int i = 0; i < effects_num; ++i) {
-                    effects[i].isActive = false;
+                for (int i = 0; i < hazards_num; ++i) {
+                    hazards[i].isActive = false;
                 }
             }
             break;
+             */
     }
 }
-void Entity::AI(Entity player, Map* map) {//, Entity* effects_sprites, int ef_s_size){
-    switch (aiType) {
-        case PAPARAZZI:
-            AIPaparazzi(player, map);
+
+void Entity::AIFly(Entity player, Entity* hazards, int hazard_count, Map* map) {
+    switch (aiState) {
+        case IDLE:
+            if (glm::distance(position, player.position) < 3.0f && hazards[0].isActive == false) {
+                aiState = WALKING;
+            }
+            else if (position.y >= initialPosition.y + 0.25)
+            {
+                velocity.y = -2;
+            }
+            else if (position.y <= initialPosition.y - 0.25)
+            {
+                velocity.y = 2;
+            }
+            
             break;
-        case JOOMBA:
-            AIJoomba(player, map);
+        case WALKING:
+            for(int i = 0; i < hazard_count; ++i){
+                if(hazards[i].hzType == BOMB && hazards[i].isActive == false){
+                    hazards[0].position = position;
+                    hazards[0].isActive = true;
+                }
+            }
+            
+            aiState = IDLE;
             break;
     }
 }
 
+void Entity::AISpiker(Entity player,Entity* hazards, int hazard_count, Map* map) {
+    switch (aiState) {
+        case IDLE:
+            velocity = glm::vec3(0.0f, 0, 0);
+            break;
+        case WALKING:
+            if (CheckPartialOnLedge(map)) {
+                velocity.x *= -1;
+            }
+            if(abs(velocity.y) > 0.0f){
+                velocity.x = 0.0f;
+            }
+            else if(position.x < player.position.x){
+                velocity.x = 1.0f;
+            }
+            else{
+                velocity.x = -1.0f;
+            }
+            if ((glm::distance(position, player.position) < 2.5f) && timer == 50.0f){
+                aiState = ATTACK;
+                timer -= 1.0f;
+            }
+            if(timer < 50.0f){
+                timer += 1.0f;
+            }
+            break;
+        case RUNNING:
+            break;
+        case SLOW_DOWN:
+            break;
+        case AOE:
+            break;
+        case ATTACK:
+            
+            for(int i = 0; i < hazard_count; ++i){
+                if(hazards[i].hzType == SPIKE && hazards[i].isActive == false){
+                    hazards[i].position = player.position;
+                    hazards[i].isActive = true;
+                    hazards[i].isStatic = true;
+                    hazards[i].textureID = Util::LoadTexture("papa_evil.png");
+                    hazards[i].hzState = TICKING;
+                    hazards[i].timer = 50.0f;
+                }
+            }
+            
+            
+            aiState = WALKING;
+            
+            break;
+    }
+}
+
+void Entity::AIGunner(Entity player, Entity* hazards, int hazard_count, Map* map) {
+    switch (aiState) {
+        case IDLE:
+            velocity = glm::vec3(0, 0, 0);
+            break;
+        case WALKING:
+            break;
+        case RUNNING:
+            break;
+        case SLOW_DOWN:
+            break;
+        case AOE:
+            break;
+        case ATTACK:
+            break;
+    }
+}
+
+
+void Entity::AIBoss(Entity player, Entity* hazards, int hazard_count, Map* map) {
+    switch (aiState) {
+        case IDLE:
+            velocity = glm::vec3(0, 0, 0);
+            break;
+        case WALKING:
+            break;
+        case RUNNING:
+            break;
+        case SLOW_DOWN:
+            break;
+        case AOE:
+            break;
+        case ATTACK:
+            break;
+    }
+}
+
+
+
+
+
+
+void Entity::AI(Entity& player, Entity* hazards, int hazard_count, Map* map) {//, Entity* effects_sprites, int ef_s_size){
+    switch (aiType) {
+        case PAPARAZZI:
+            AIPaparazzi(player,  map);
+            break;
+        case JOOMBA:
+            AIJoomba(player, map);
+            break;
+        case SPIKER:
+            AISpiker(player, hazards,hazard_count, map);
+            break;
+        case GUNNER:
+            AISpiker(player, hazards,hazard_count, map);
+            break;
+        case FLY:
+            AIFly(player, hazards,hazard_count, map);
+            break;
+        case BOSS:
+            AIBoss(player, hazards,hazard_count, map);
+            break;
+    }
+}
+void Entity::HZBomb(Entity player, float deltaTime, Map* map)
+{
+    switch (hzState) {
+        case DEPLOY:
+            if (velocity.y == 0)
+            {
+                hzState = TICKING;
+            }
+            break;
+        case TICKING:
+            if (timer <= 0)
+            {
+                hzState = EXPLODE;
+                timer = 10.0f;
+            }
+            else
+            {
+                timer = timer - deltaTime;
+            }
+            
+            break;
+        case EXPLODE:
+            isActive = false;
+            break;
+    }
+}
+
+void Entity::HZSpike(Entity player, float deltaTime, Map* map)
+{
+    switch (hzState) {
+        case DEPLOY:
+            break;
+        case TICKING:
+            if (timer <= 0)
+            {
+                hzState = EXPLODE;
+                timer = 100.0f;
+                textureID = Util::LoadTexture("papa_evil.png");
+                isActive = true;
+            }
+            
+            else if((int) timer % 10 == 0){
+                std :: cout << "change" << std :: endl;
+                textureID = Util::LoadTexture("me.png");
+            }
+            
+            else{
+                textureID = Util::LoadTexture("orange.png");
+            }
+
+            timer -= deltaTime;
+
+            break;
+        case EXPLODE:
+            std :: cout << "BOOM" << std :: endl;
+            if(timer <= 0.0f){
+                isActive = false;
+            }
+            timer -= deltaTime;
+            
+            break;
+    }
+}
+
+void Entity::HZ(Entity& player, float deltaTime, Map* map)
+{
+    switch (hzType) {
+        case SPIKE:
+            HZSpike(player, deltaTime, map);
+            break;
+        case LASER:
+            //AIJoomba(player, map);
+            break;
+        case BOMB:
+            HZBomb(player, deltaTime, map);
+            break;
+    }
+}
 void Entity::DrawSpriteFromTextureAtlas(ShaderProgram* program, int index)
 {
     float u = (float)(index % cols) / (float)cols;
@@ -491,7 +735,7 @@ void Entity::animate(float deltaTime)
         }
     }
 }
-void Entity::Update(float deltaTime, Entity* objects, int objectCount, Map* map, Entity* enemies, int enemyCount)
+void Entity::Update(float deltaTime, Entity* objects, int objectCount, Entity* hazards, int hazard_count, Map* map, Entity* enemies, int enemyCount)
 {
     collidedTop = false;
     collidedBottom = false;
@@ -513,6 +757,8 @@ void Entity::Update(float deltaTime, Entity* objects, int objectCount, Map* map,
         if(isActive){
             CheckCollisionsX(enemies, enemyCount);
             CheckCollisionsY(enemies, enemyCount);
+            
+            position.x = objects -> position.x + 0.5f;
         }
         
         
@@ -536,6 +782,17 @@ void Entity::Update(float deltaTime, Entity* objects, int objectCount, Map* map,
         else if(timer <= 0.0f){
             timer = 50.0f;
         }
+    }
+    
+    if (entityType == ENEMY)
+    {
+        AI(*objects, hazards, hazard_count, map);
+        //CheckCollisionsX(&player, 1);
+        //CheckCollisionsY(&player, 1);
+    }
+    if (entityType == HAZARD)
+    {
+        HZ(*objects, deltaTime, map);
     }
     
     animate(deltaTime);

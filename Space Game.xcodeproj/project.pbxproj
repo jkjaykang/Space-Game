@@ -12,7 +12,10 @@
 		28411BA323973A4B00AE28A5 /* complete.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 28411BA0239739FB00AE28A5 /* complete.png */; };
 		28411BA423973A4B00AE28A5 /* temp.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 28411BA223973A4000AE28A5 /* temp.png */; };
 		28411BA523973A4B00AE28A5 /* test.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 28411BA123973A4000AE28A5 /* test.png */; };
-		28411BA723973CCC00AE28A5 /* tileset.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 28411BA623973CB200AE28A5 /* tileset.png */; };
+		28411BAA23980BA000AE28A5 /* footstep.wav in CopyFiles */ = {isa = PBXBuildFile; fileRef = 28411BA823980B3100AE28A5 /* footstep.wav */; };
+		28411BAB23980C0100AE28A5 /* tileset.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 28411BA623973CB200AE28A5 /* tileset.png */; };
+		28411BAE239C9ADB00AE28A5 /* fly.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 28411BAC239C9AC500AE28A5 /* fly.png */; };
+		28411BAF239C9ADB00AE28A5 /* bomb.png in CopyFiles */ = {isa = PBXBuildFile; fileRef = 28411BAD239C9ACE00AE28A5 /* bomb.png */; };
 		2891807E2369D7D700E31004 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2891807C2369D7D700E31004 /* Util.cpp */; };
 		289180832369E12E00E31004 /* Scene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 289180812369E12E00E31004 /* Scene.cpp */; };
 		289180862369E1DB00E31004 /* Level1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 289180842369E1DB00E31004 /* Level1.cpp */; };
@@ -53,7 +56,10 @@
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
-				28411BA723973CCC00AE28A5 /* tileset.png in CopyFiles */,
+				28411BAE239C9ADB00AE28A5 /* fly.png in CopyFiles */,
+				28411BAF239C9ADB00AE28A5 /* bomb.png in CopyFiles */,
+				28411BAB23980C0100AE28A5 /* tileset.png in CopyFiles */,
+				28411BAA23980BA000AE28A5 /* footstep.wav in CopyFiles */,
 				28411BA323973A4B00AE28A5 /* complete.png in CopyFiles */,
 				28411BA423973A4B00AE28A5 /* temp.png in CopyFiles */,
 				28411BA523973A4B00AE28A5 /* test.png in CopyFiles */,
@@ -86,6 +92,9 @@
 		28411BA123973A4000AE28A5 /* test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = test.png; path = Platform/test.png; sourceTree = SOURCE_ROOT; };
 		28411BA223973A4000AE28A5 /* temp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = temp.png; path = Platform/temp.png; sourceTree = SOURCE_ROOT; };
 		28411BA623973CB200AE28A5 /* tileset.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = tileset.png; path = Platform/tileset.png; sourceTree = SOURCE_ROOT; };
+		28411BA823980B3100AE28A5 /* footstep.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = footstep.wav; path = Platform/footstep.wav; sourceTree = SOURCE_ROOT; };
+		28411BAC239C9AC500AE28A5 /* fly.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fly.png; path = Platform/fly.png; sourceTree = SOURCE_ROOT; };
+		28411BAD239C9ACE00AE28A5 /* bomb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bomb.png; path = Platform/bomb.png; sourceTree = SOURCE_ROOT; };
 		2891807C2369D7D700E31004 /* Util.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Util.cpp; sourceTree = "<group>"; };
 		2891807D2369D7D700E31004 /* Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
 		289180812369E12E00E31004 /* Scene.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Scene.cpp; sourceTree = "<group>"; };
@@ -116,7 +125,6 @@
 		2891868623820D2B00E31004 /* fall_1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = fall_1.wav; sourceTree = "<group>"; };
 		2891868F23820D6D00E31004 /* me.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = me.png; path = "../../Platformer-Return-of-the-king-/Platform/me.png"; sourceTree = "<group>"; };
 		2891869123820DE800E31004 /* me.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = me.png; sourceTree = "<group>"; };
-		DB233D0E23661A3D008B1DEB /* tileset.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tileset.png; sourceTree = "<group>"; };
 		DB233D1023661B3D008B1DEB /* Map.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Map.cpp; sourceTree = "<group>"; };
 		DB233D1123661B3D008B1DEB /* Map.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Map.h; sourceTree = "<group>"; };
 		DBDF1B4F2323DE3F007CECB1 /* Space Game */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Space Game"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -170,52 +178,54 @@
 		DBDF1B512323DE3F007CECB1 /* Space Game */ = {
 			isa = PBXGroup;
 			children = (
-				DBDF1B5B2323DE8D007CECB1 /* glm */,
-				DBDF1B5C2323DE8D007CECB1 /* shaders */,
-				2891808A23707EE100E31004 /* Effects.cpp */,
-				FAD6911D234B8AE400D9AA86 /* Entity.cpp */,
-				289180842369E1DB00E31004 /* Level1.cpp */,
-				289180872369E57D00E31004 /* Level2.cpp */,
-				28918410237605FA00E31004 /* Level3.cpp */,
-				2891865B2381E25B00E31004 /* main.cpp */,
-				DB233D1023661B3D008B1DEB /* Map.cpp */,
-				289180812369E12E00E31004 /* Scene.cpp */,
-				DBDF1B5D2323DE8D007CECB1 /* ShaderProgram.cpp */,
-				2891865D2381E31E00E31004 /* StartScreen.cpp */,
-				2891807C2369D7D700E31004 /* Util.cpp */,
-				2891808B23707EE100E31004 /* Effects.h */,
-				FAD6911C234B8AE400D9AA86 /* Entity.h */,
-				289180852369E1DB00E31004 /* Level1.h */,
-				289180882369E57D00E31004 /* Level2.h */,
-				28918411237605FA00E31004 /* Level3.h */,
-				DB233D1123661B3D008B1DEB /* Map.h */,
-				289180822369E12E00E31004 /* Scene.h */,
-				DBDF1B592323DE8D007CECB1 /* ShaderProgram.h */,
-				2891865E2381E31E00E31004 /* StartScreen.h */,
-				DBDF1B5A2323DE8D007CECB1 /* stb_image.h */,
-				2891807D2369D7D700E31004 /* Util.h */,
 				289186722381FECA00E31004 /* background.mp3 */,
 				28411BA0239739FB00AE28A5 /* complete.png */,
+				2891868423820D1B00E31004 /* damage_1.wav */,
+				2891808A23707EE100E31004 /* Effects.cpp */,
+				2891808B23707EE100E31004 /* Effects.h */,
+				FAD6911D234B8AE400D9AA86 /* Entity.cpp */,
+				FAD6911C234B8AE400D9AA86 /* Entity.h */,
 				2891841323772A1E00E31004 /* evil.png */,
+				2891868623820D2B00E31004 /* fall_1.wav */,
 				2891868523820D2B00E31004 /* font.png */,
+				28411BA823980B3100AE28A5 /* footstep.wav */,
+				28411BAC239C9AC500AE28A5 /* fly.png */,
+				28411BAD239C9ACE00AE28A5 /* bomb.png */,
+				DBDF1B5B2323DE8D007CECB1 /* glm */,
 				28411B9D239735D100AE28A5 /* Idle.png */,
 				2891868323820D0400E31004 /* jackson.png */,
-				28411BA623973CB200AE28A5 /* tileset.png */,
 				2891868223820D0400E31004 /* jackson1.png */,
+				2891868023820D0400E31004 /* jump_1.wav */,
+				2891868123820D0400E31004 /* jump_2.wav */,
+				289180842369E1DB00E31004 /* Level1.cpp */,
+				289180852369E1DB00E31004 /* Level1.h */,
+				289180872369E57D00E31004 /* Level2.cpp */,
+				289180882369E57D00E31004 /* Level2.h */,
+				28918410237605FA00E31004 /* Level3.cpp */,
+				28918411237605FA00E31004 /* Level3.h */,
+				2891865B2381E25B00E31004 /* main.cpp */,
+				DB233D1023661B3D008B1DEB /* Map.cpp */,
+				DB233D1123661B3D008B1DEB /* Map.h */,
 				2891869123820DE800E31004 /* me.png */,
 				2891868F23820D6D00E31004 /* me.png */,
 				28918415237752F400E31004 /* orange.png */,
 				28918675238201C000E31004 /* papa_evil.png */,
 				28918674238201C000E31004 /* papa.png */,
+				289180812369E12E00E31004 /* Scene.cpp */,
+				289180822369E12E00E31004 /* Scene.h */,
+				DBDF1B5D2323DE8D007CECB1 /* ShaderProgram.cpp */,
+				DBDF1B592323DE8D007CECB1 /* ShaderProgram.h */,
+				DBDF1B5C2323DE8D007CECB1 /* shaders */,
+				2891865D2381E31E00E31004 /* StartScreen.cpp */,
+				2891865E2381E31E00E31004 /* StartScreen.h */,
+				DBDF1B5A2323DE8D007CECB1 /* stb_image.h */,
 				28411BA223973A4000AE28A5 /* temp.png */,
 				28411BA123973A4000AE28A5 /* test.png */,
 				289184172377744900E31004 /* tile.png */,
-				DB233D0E23661A3D008B1DEB /* tileset.png */,
+				28411BA623973CB200AE28A5 /* tileset.png */,
+				2891807C2369D7D700E31004 /* Util.cpp */,
+				2891807D2369D7D700E31004 /* Util.h */,
 				28411B9C239735C600AE28A5 /* walk.png */,
-				2891868423820D1B00E31004 /* damage_1.wav */,
-				2891868623820D2B00E31004 /* fall_1.wav */,
-				2891868023820D0400E31004 /* jump_1.wav */,
-				2891868123820D0400E31004 /* jump_2.wav */,
 			);
 			path = "Space Game";
 			sourceTree = "<group>";

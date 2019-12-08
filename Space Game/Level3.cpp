@@ -4,6 +4,7 @@
 
 #define ENEMIES_COUNT 2
 #define JOOMBA_COUNT 1
+#define HAZARD_COUNT 1
 unsigned int level3_data[] =
 {
     3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -35,7 +36,16 @@ void Level3::Initialize() {
     state.nextLevel = -1;
 }
 void Level3::Update(float deltaTime) {
-    state.player.Update(deltaTime, NULL, 0, state.map, state.enemies, ENEMIES_COUNT);
+    state.player.Update(deltaTime, NULL, 0, state.hazards, HAZARD_COUNT, state.map, state.enemies, ENEMIES_COUNT);
+    sword.Update(deltaTime, &(state.player), 1,state.hazards,  HAZARD_COUNT, state.map, state.enemies, ENEMIES_COUNT);
+    for (int i = 0; i < ENEMIES_COUNT; ++i) {
+        //state.enemies[i].Update(deltaTime, &state.player, 1, state.map, state.enemies, ENEMIES_COUNT);
+        state.enemies[i].Update(deltaTime, &state.player, 1, state.hazards, HAZARD_COUNT, state.map, state.enemies, ENEMIES_COUNT);
+    }
+    for (int i = 0; i < HAZARD_COUNT * 2; ++i) {
+        //AOE_dmg_sprites[i].Update(deltaTime, &state.player, 1, state.map, state.enemies, ENEMIES_COUNT);
+        state.hazards[i].Update(deltaTime, &state.player, 1, state.hazards, HAZARD_COUNT, state.map, state.enemies, ENEMIES_COUNT);
+    }
 }
 void Level3::Render(ShaderProgram* program) {
     state.map->Render(program);
