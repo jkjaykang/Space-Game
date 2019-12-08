@@ -10,8 +10,10 @@ Entity::Entity()
     speed = 0;
     width = 1;
     height = 1;
-    timer = 50.0f;
+    //timer = 50.0f;
     footstep = Mix_LoadWAV("footstep.wav");
+    scale = glm::vec3(2.0f, 2.0f, 2.0f);
+    timer = 2.0f;
 }
 
 bool Entity::CheckCollision(Entity& other)
@@ -24,21 +26,39 @@ bool Entity::CheckCollision(Entity& other)
     
     if (xdist < 0 && ydist < 0)
     {
-        if (entityType == PLAYER && other.entityType == ENEMY)
-        {
-            isActive = false;
+        if(entityType == PLAYER){
+            if(other.entityType == ENEMY){
+                isActive = false;
+            }
+            if(other.entityType == HAZARD && other.hzType == SPIKE && other.hzState == EXPLODE){
+                isActive = false;
+            }
+            if(other.entityType == HAZARD && other.hzType == SPIKE && other.hzState == TICKING){
+                return false;
+            }
+            if(other.entityType == HAZARD && other.hzType == LASER && other.hzState == EXPLODE){
+                isActive = false;
+            }
         }
-        if (entityType == SWORD && other.entityType == ENEMY)
+        if (entityType == SWORD)
         {
-            std :: cout << "DEATH" << std :: endl;
-            other.isActive = false;
+            if(other.entityType == ENEMY && other.aiType != BOSS){
+                std :: cout << "DEATH" << std :: endl;
+                other.isActive = false;
+            }
+            if(other.entityType == HAZARD && (other.hzType == LASER || other.hzType == SPIKE)){
+                std :: cout << "DESTROYED" << std :: endl;
+                other.isActive = false;
+            }
+            
         }
+        /*
         if (entityType == ENEMY && other.entityType == SWORD)
         {
             std :: cout << "DEATH" << std :: endl;
             isActive = false;
         }
-        
+        */
         return true;
     }
     
@@ -246,122 +266,31 @@ void Entity::Jump()
     }
 }
 
-//IDLE, WALKING, RUNNING, SLOW_DOWN
-
-void Entity::AIPaparazzi(Entity player, Map* map) {
-    switch (aiState) {
-        case IDLE:
-            velocity = glm::vec3(0, 0, 0);
-            break;
-        case WALKING:
-            if (CheckPartialOnLedge(map)) {
-                velocity.x *= -1;
-                //velocity.x = 0;
-            }
-            if (glm::distance(position, player.position) < 2.5f) {
-                aiState = RUNNING;
-                velocity.x = 3.5;
-                timer = 7.0f;
-            }
-            break;
-        case RUNNING:
-            std::cout << "RUNNING" << std::endl;
-            if (CheckPartialOnLedge(map)) {
-                Jump();
-            }
-            timer -= 1.0f;
-            if (timer <= 0.0f) {
-                timer = 25.0f;
-                aiState = SLOW_DOWN;
-                velocity.x = 1.25f;
-            }
-            break;
-            //if in their slow down state they are too far off, they will go back to walking
-        case SLOW_DOWN:
-            std::cout << "SLOW DOWN" << std::endl;
-            timer -= 1.0f;
-            if (glm::distance(position, player.position) < 5.0f) {
-                aiState = WALKING;
-            }
-            else if (timer <= 0.0f) {
-                timer = 7.0f;
-                aiState = RUNNING;
-                velocity.x = 3.5f;
-            }
-            if (CheckPartialOnLedge(map)) {
-                Jump();
-            }
-        case AOE:
-            break;
-    }
-}
-void Entity::AIJoomba(Entity player, Map* map) {
-    switch (aiState) {
-        case IDLE:
-            velocity = glm::vec3(0, 0, 0);
-            break;
-        case WALKING:
-            if (CheckPartialOnLedge(map)) {
-                velocity.x *= -1;
-                //velocity.x = 0;
-            }
-            timer -= 1.0f;
-            if (timer <= 0.0f) {
-                timer = 25.0f;
-                aiState = AOE;
-                velocity.x *= 0.001f;
-            }
-            //velocity.x *= 1;
-            
-            break;
-        case RUNNING:
-            break;
-        case SLOW_DOWN:
-            break;
-        case AOE:
-            //int temp_size = effects_num;
-            int aoe_sprite_left = 2;
-            bool left_sprite_done = false;
-            bool right_sprite_done = false;
-            /*
-            for (int i = 0; i < hazards_num; ++i) {
-                if (aoe_sprite_left > 0) {
-                    if (hazards[i].isActive == false && left_sprite_done == false) {
-                        hazards[i].isActive = true;
-                        hazards[i].position = glm::vec3(position.x - 1.0f, position.y, 0);
-                        left_sprite_done = true;
-                    }
-                    else if (hazards[i].isActive == false && left_sprite_done == true) {
-                        hazards[i].isActive = true;
-                        hazards[i].position = glm::vec3(position.x + 1.0f, position.y, 0);
-                        right_sprite_done = true;
-                    }
-                    aoe_sprite_left -= 1;
-                }
-                else {
-                    break;
-                }
-            }
-            
-            timer -= 1.0f;
-            if (timer <= 0.0f) {
-                timer = 100.0f + rand() % 200 + 1;
-                aiState = WALKING;
-                velocity.x *= 1000.0f;
-                for (int i = 0; i < hazards_num; ++i) {
-                    hazards[i].isActive = false;
-                }
-            }
-            break;
-             */
-    }
+void Entity::Attack(){
+    //std :: cout << "done" << std::endl;
 }
 
 void Entity::AIFly(Entity player, Entity* hazards, int hazard_count, Map* map) {
     switch (aiState) {
         case IDLE:
-            if (glm::distance(position, player.position) < 3.0f && hazards[0].isActive == false) {
-                aiState = WALKING;
+            
+            //std::cout << "IDLE BIRD" << std::endl;
+            
+            if (glm::distance(position, player.position) < 5.0f) {
+                if (position.y >= initialPosition.y + 0.25)
+                {
+                    velocity.y = -2;
+                }
+                else if (position.y <= initialPosition.y - 0.25)
+                {
+                    velocity.y = 2;
+                }
+                for (int i = 0; i < hazard_count; ++i) {
+                    if (hazards[i].hzType == BOMB && hazards[i].isActive == false) {
+                        aiState = WALKING;
+                    }
+                }
+                
             }
             else if (position.y >= initialPosition.y + 0.25)
             {
@@ -374,12 +303,20 @@ void Entity::AIFly(Entity player, Entity* hazards, int hazard_count, Map* map) {
             
             break;
         case WALKING:
+            
+            //std::cout << "WALKING BIRD" << std::endl;
+            
             for(int i = 0; i < hazard_count; ++i){
                 if(hazards[i].hzType == BOMB && hazards[i].isActive == false){
-                    hazards[0].position = position;
-                    hazards[0].isActive = true;
+                    hazards[i].position.y = position.y - 0.2f;
+                    hazards[i].isActive = true;
+                    aiState = IDLE;
+                    break;
                 }
             }
+                
+                
+                break;
             
             aiState = IDLE;
             break;
@@ -390,6 +327,12 @@ void Entity::AISpiker(Entity player,Entity* hazards, int hazard_count, Map* map)
     switch (aiState) {
         case IDLE:
             velocity = glm::vec3(0.0f, 0, 0);
+            
+            if((glm::distance(position, player.position) <= 7.5f)){
+                aiState = WALKING;
+            }
+            
+            
             break;
         case WALKING:
             if (CheckPartialOnLedge(map)) {
@@ -398,17 +341,25 @@ void Entity::AISpiker(Entity player,Entity* hazards, int hazard_count, Map* map)
             if(abs(velocity.y) > 0.0f){
                 velocity.x = 0.0f;
             }
-            else if(position.x < player.position.x){
-                velocity.x = 1.0f;
+            
+            if((glm::distance(position, player.position) <= 7.5f)){
+                if ((glm::distance(position, player.position) < 2.5f) && timer >= 35.0f){
+                    aiState = ATTACK;
+                    timer = 0.0f;
+                }
+                if(position.x < player.position.x){
+                    velocity.x = 1.0f;
+                }
+                else{
+                    velocity.x = -1.0f;
+                }
             }
             else{
-                velocity.x = -1.0f;
+                aiState = IDLE;
+                velocity = glm::vec3(0,0,0);
             }
-            if ((glm::distance(position, player.position) < 2.5f) && timer == 50.0f){
-                aiState = ATTACK;
-                timer -= 1.0f;
-            }
-            if(timer < 50.0f){
+            
+            if(timer < 35.0f){
                 timer += 1.0f;
             }
             break;
@@ -422,16 +373,16 @@ void Entity::AISpiker(Entity player,Entity* hazards, int hazard_count, Map* map)
             
             for(int i = 0; i < hazard_count; ++i){
                 if(hazards[i].hzType == SPIKE && hazards[i].isActive == false){
+                    hazards[i].acceleration.y = -9.81;
                     hazards[i].position = player.position;
                     hazards[i].isActive = true;
                     hazards[i].isStatic = true;
                     hazards[i].textureID = Util::LoadTexture("papa_evil.png");
                     hazards[i].hzState = TICKING;
-                    hazards[i].timer = 50.0f;
+                    hazards[i].timer = 4.0f;
                 }
             }
-            
-            
+           
             aiState = WALKING;
             
             break;
@@ -444,6 +395,33 @@ void Entity::AIGunner(Entity player, Entity* hazards, int hazard_count, Map* map
             velocity = glm::vec3(0, 0, 0);
             break;
         case WALKING:
+            if (CheckPartialOnLedge(map)) {
+                velocity.x *= -1;
+            }
+            if(abs(velocity.y) > 0.0f){
+                velocity.x = 0.0f;
+            }
+            
+            if((glm::distance(position, player.position) <= 7.5f)){
+                if ((glm::distance(position, player.position) < 5.5f) && timer >= 50.0f){
+                    aiState = ATTACK;
+                    timer = 0.0f;
+                }
+                if(position.x < player.position.x){
+                    velocity.x = 1.25f;
+                }
+                else{
+                    velocity.x = -1.25f;
+                }
+            }
+            else{
+                aiState = IDLE;
+                velocity = glm::vec3(0,0,0);
+            }
+            
+            if(timer < 50.0f){
+                timer += 1.0f;
+            }
             break;
         case RUNNING:
             break;
@@ -452,6 +430,32 @@ void Entity::AIGunner(Entity player, Entity* hazards, int hazard_count, Map* map
         case AOE:
             break;
         case ATTACK:
+            
+            std :: cout << "ATTACK" << std :: endl;
+            
+            for(int i = 0; i < hazard_count; ++i){
+                if(hazards[i].hzType == LASER && hazards[i].isActive == false){
+                    hazards[i].position = position;
+                    
+                    if(player.position.x > position.x){
+                        hazards[i].position.x += 0.25f;
+                        hazards[i].velocity = glm::vec3(3.0f,0,0);
+                    }
+                    else{
+                        position.x -= 0.25f;
+                        hazards[i].velocity = glm::vec3(-3.0f,0,0);
+                    }
+                    hazards[i].isActive = true;
+                    hazards[i].isStatic = false;
+                    hazards[i].textureID = Util::LoadTexture("bullet_temp.png");
+                    hazards[i].hzState = EXPLODE;
+                    hazards[i].timer = 1.5f;
+                    
+                }
+            }
+            
+            aiState = WALKING;
+            
             break;
     }
 }
@@ -481,26 +485,24 @@ void Entity::AIBoss(Entity player, Entity* hazards, int hazard_count, Map* map) 
 
 
 void Entity::AI(Entity& player, Entity* hazards, int hazard_count, Map* map) {//, Entity* effects_sprites, int ef_s_size){
-    switch (aiType) {
-        case PAPARAZZI:
-            AIPaparazzi(player,  map);
-            break;
-        case JOOMBA:
-            AIJoomba(player, map);
-            break;
-        case SPIKER:
-            AISpiker(player, hazards,hazard_count, map);
-            break;
-        case GUNNER:
-            AISpiker(player, hazards,hazard_count, map);
-            break;
-        case FLY:
-            AIFly(player, hazards,hazard_count, map);
-            break;
-        case BOSS:
-            AIBoss(player, hazards,hazard_count, map);
-            break;
+    if(isActive){
+        switch (aiType) {
+            case SPIKER:
+                AISpiker(player, hazards,hazard_count, map);
+                break;
+            case GUNNER:
+                AIGunner(player, hazards,hazard_count, map);
+                break;
+            case FLY:
+                AIFly(player, hazards,hazard_count, map);
+                break;
+            case BOSS:
+                AIBoss(player, hazards,hazard_count, map);
+                break;
+        }
     }
+    
+    
 }
 void Entity::HZBomb(Entity player, float deltaTime, Map* map)
 {
@@ -508,14 +510,16 @@ void Entity::HZBomb(Entity player, float deltaTime, Map* map)
         case DEPLOY:
             if (velocity.y == 0)
             {
+                
                 hzState = TICKING;
             }
             break;
         case TICKING:
             if (timer <= 0)
             {
+                timer = 0.1f;
                 hzState = EXPLODE;
-                timer = 10.0f;
+                //timer = 10.0f;
             }
             else
             {
@@ -524,7 +528,16 @@ void Entity::HZBomb(Entity player, float deltaTime, Map* map)
             
             break;
         case EXPLODE:
-            isActive = false;
+            if (timer <= 0)
+            {
+                timer = 3.0f;
+                isActive = false;
+                hzState = DEPLOY;
+            }
+            else
+            {
+                timer = timer - deltaTime;
+            }
             break;
     }
 }
@@ -538,26 +551,25 @@ void Entity::HZSpike(Entity player, float deltaTime, Map* map)
             if (timer <= 0)
             {
                 hzState = EXPLODE;
-                timer = 100.0f;
+                timer = 2.0f;
                 textureID = Util::LoadTexture("papa_evil.png");
                 isActive = true;
             }
-            
-            else if((int) timer % 10 == 0){
-                std :: cout << "change" << std :: endl;
-                textureID = Util::LoadTexture("me.png");
-            }
-            
+
             else{
                 textureID = Util::LoadTexture("orange.png");
+                timer -= deltaTime;
             }
 
-            timer -= deltaTime;
+            
 
             break;
         case EXPLODE:
-            std :: cout << "BOOM" << std :: endl;
+            //std :: cout << "BOOM" << std :: endl;
+            
             if(timer <= 0.0f){
+                //std :: cout << "FALSE" << std :: endl;
+                
                 isActive = false;
             }
             timer -= deltaTime;
@@ -566,19 +578,44 @@ void Entity::HZSpike(Entity player, float deltaTime, Map* map)
     }
 }
 
-void Entity::HZ(Entity& player, float deltaTime, Map* map)
+void Entity::HZLaser(Entity player, float deltaTime, Map* map)
 {
-    switch (hzType) {
-        case SPIKE:
-            HZSpike(player, deltaTime, map);
+    switch (hzState) {
+        case DEPLOY:
             break;
-        case LASER:
-            //AIJoomba(player, map);
+        case TICKING:
             break;
-        case BOMB:
-            HZBomb(player, deltaTime, map);
+        case EXPLODE:
+            std :: cout << timer << std :: endl;
+            //velocity.x += .05f;
+            if(timer <= 0.0f){
+                //std :: cout << "FALSE" << std :: endl;
+                isActive = false;
+            }
+            timer -= deltaTime;
+            
             break;
     }
+}
+
+
+
+void Entity::HZ(Entity& player, float deltaTime, Map* map)
+{
+    if(isActive){
+        switch (hzType) {
+            case SPIKE:
+                HZSpike(player, deltaTime, map);
+                break;
+            case LASER:
+                HZLaser(player, deltaTime, map);
+                break;
+            case BOMB:
+                HZBomb(player, deltaTime, map);
+                break;
+        }
+    }
+    
 }
 void Entity::DrawSpriteFromTextureAtlas(ShaderProgram* program, int index)
 {
@@ -735,6 +772,37 @@ void Entity::animate(float deltaTime)
         }
     }
 }
+
+
+void Entity::animateHz(float deltaTime)
+{
+    
+    if (hzState == DEPLOY)
+    {
+        currentAnim = idle;
+    }
+    else if (hzState == TICKING)
+    {
+        currentAnim = ticking;
+    }
+    else if (hzState == EXPLODE)
+    {
+        currentAnim = exploding;
+    }
+    animTime += deltaTime;
+    if (animTime >= 0.075f)
+    {
+        animTime = 0;
+        animIndex++;
+        if (animIndex >= animFrames)
+        {
+            animIndex = 0;
+        }
+    }
+    
+    
+}
+
 void Entity::Update(float deltaTime, Entity* objects, int objectCount, Entity* hazards, int hazard_count, Map* map, Entity* enemies, int enemyCount)
 {
     collidedTop = false;
@@ -758,7 +826,12 @@ void Entity::Update(float deltaTime, Entity* objects, int objectCount, Entity* h
             CheckCollisionsX(enemies, enemyCount);
             CheckCollisionsY(enemies, enemyCount);
             
-            position.x = objects -> position.x + 0.5f;
+            CheckCollisionsX(hazards, hazard_count);
+            CheckCollisionsY(hazards, hazard_count);
+            
+            
+            
+            //position.x = objects -> position.x + 0.5f;
         }
         
         
@@ -776,12 +849,16 @@ void Entity::Update(float deltaTime, Entity* objects, int objectCount, Entity* h
         CheckCollisionsX(enemies, enemyCount);
         CheckCollisionsY(enemies, enemyCount);
         
+        CheckCollisionsX(hazards, hazard_count);
+        CheckCollisionsY(hazards, hazard_count);
+        
         if(timer > 0 && timer < 50.0f){
             timer-=1.0f;
         }
         else if(timer <= 0.0f){
             timer = 50.0f;
         }
+        animate(deltaTime);
     }
     
     if (entityType == ENEMY)
@@ -793,6 +870,7 @@ void Entity::Update(float deltaTime, Entity* objects, int objectCount, Entity* h
     if (entityType == HAZARD)
     {
         HZ(*objects, deltaTime, map);
+        animateHz(deltaTime);
     }
     
     animate(deltaTime);
@@ -805,11 +883,21 @@ void Entity::Render(ShaderProgram *program) {
     {
         glm::mat4 modelMatrix = glm::mat4(1.0f);
         modelMatrix = glm::translate(modelMatrix, position);
+        
+        if (entityType == HAZARD && hzType == BOMB && hzState == EXPLODE)
+        {
+            modelMatrix = glm::scale(modelMatrix, scale);
+        }
+        
         program->SetModelMatrix(modelMatrix);
         
         
         
         if (entityType == PLAYER)
+        {
+            DrawSpriteFromTextureAtlas(program, currentAnim[animIndex]);
+        }
+        else if (entityType == HAZARD)
         {
             DrawSpriteFromTextureAtlas(program, currentAnim[animIndex]);
         }

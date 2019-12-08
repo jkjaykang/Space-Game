@@ -42,7 +42,7 @@ void Level3::Update(float deltaTime) {
         //state.enemies[i].Update(deltaTime, &state.player, 1, state.map, state.enemies, ENEMIES_COUNT);
         state.enemies[i].Update(deltaTime, &state.player, 1, state.hazards, HAZARD_COUNT, state.map, state.enemies, ENEMIES_COUNT);
     }
-    for (int i = 0; i < HAZARD_COUNT * 2; ++i) {
+    for (int i = 0; i < HAZARD_COUNT; ++i) {
         //AOE_dmg_sprites[i].Update(deltaTime, &state.player, 1, state.map, state.enemies, ENEMIES_COUNT);
         state.hazards[i].Update(deltaTime, &state.player, 1, state.hazards, HAZARD_COUNT, state.map, state.enemies, ENEMIES_COUNT);
     }

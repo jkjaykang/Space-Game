@@ -147,7 +147,14 @@ void ProcessInput() {
                             currentScene->sword.timer -= 1.0f;
                             currentScene->sword.isActive = true;
                             currentScene->sword.position = currentScene -> state.player.position;
-                            currentScene->sword.position.x += 0.5f;
+                            if (currentScene->state.player.facingLeft())
+                            {
+                                currentScene->sword.position.x -= 0.5f;
+                            }
+                            else
+                            {
+                                currentScene->sword.position.x += 0.5f;
+                            }
                         }
                         
                         break;

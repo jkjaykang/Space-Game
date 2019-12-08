@@ -59,16 +59,23 @@ public:
     bool isActive;
     bool isInvincible;
     
+    int* idle;
+    int* ticking;
+    int* exploding;
+    
     glm::vec3 position;
     glm::vec3 velocity;
     glm::vec3 acceleration;
     glm::vec3 initialPosition;
+    glm::vec3 scale;
     
     float width;
     float height;
     
     float speed;
     float timer;
+    
+    bool attacked;
     
     
     Entity();
@@ -88,6 +95,7 @@ public:
     void Render(ShaderProgram* program);
     
     void Jump();
+    void Attack();
     
     void AI(Entity& player, Entity* hazards, int hazard_count, Map* map);
     void AIPaparazzi(Entity player, Map* map);
@@ -102,6 +110,7 @@ public:
     void HZ(Entity& player, float deltaTime, Map* map);
     void HZBomb(Entity player, float deltaTime, Map* map);
     void HZSpike(Entity player, float deltaTime, Map* map);
+    void HZLaser(Entity player, float deltaTime, Map* map);
     
     void DrawSpriteFromTextureAtlas(ShaderProgram* program, int index);
     
@@ -109,6 +118,7 @@ public:
     int stepping();
     
     void animate(float deltaTime);
+    void animateHz(float deltaTime);
     
     bool collidedTop;
     bool collidedBottom;
