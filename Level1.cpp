@@ -2,9 +2,9 @@
 #define LEVEL1_WIDTH 49
 #define LEVEL1_HEIGHT 8
 
-#define ENEMIES_COUNT 1
+#define ENEMIES_COUNT 3
 //#define JOOMBA_COUNT 1
-#define HAZARD_COUNT 1
+#define HAZARD_COUNT 3
 
 
 unsigned int level1_data[] =
@@ -74,21 +74,27 @@ void Level1::Initialize() {
 	state.enemies[0].velocity = glm::vec3(0, -1, 0);
 	state.enemies[0].initialPosition = glm::vec3(3, -0.35f, 0);
 
-	/*state.enemies[1].entityType = ENEMY;
-	state.enemies[1].textureID = Util::LoadTexture("orange.png");
+	state.enemies[1].entityType = ENEMY;
+	state.enemies[1].textureID = Util::LoadTexture("fly.png");
 	state.enemies[1].acceleration = glm::vec3(0, -9.8f, 0);
 	state.enemies[1].isStatic = false;
-	state.enemies[1].position = glm::vec3(4.0f, -2.25f, 0);
+	state.enemies[1].position = glm::vec3(13.0f, -2.25f, 0);
 	state.enemies[1].aiState = WALKING;
 	state.enemies[1].aiType = SPIKER;
 	state.enemies[1].velocity = glm::vec3(5.0f, 0, 0);
-	state.enemies[1].initialPosition = glm::vec3(3, -2.25, 0);*/
+	state.enemies[1].timer = 35.0f;
+	//state.enemies[1].initialPosition = glm::vec3(3, -2.25, 0);
 
-
-
-
-
-
+	state.enemies[2].entityType = ENEMY;
+	state.enemies[2].textureID = Util::LoadTexture("me.png");
+	state.enemies[2].acceleration = glm::vec3(0, -9.8f, 0);
+	state.enemies[2].isStatic = false;
+	state.enemies[2].position = glm::vec3(15.0f, -2.25f, 0);
+	state.enemies[2].aiState = WALKING;
+	state.enemies[2].aiType = GUNNER;
+	state.enemies[2].velocity = glm::vec3(5.0f, 0, 0);
+	state.enemies[2].timer = 50.0f;
+	//state.enemies[1].initialPosition = glm::vec3(3, -2.25, 0);
 
 	state.hazards = level1_hazards;
 	state.hazards[0].entityType = HAZARD;
@@ -112,17 +118,41 @@ void Level1::Initialize() {
 	state.hazards[0].animFrames = 3;
 	state.hazards[0].animIndex = 0;
     
-   /* state.hazards[1].entityType = HAZARD;
-    state.hazards[1].hzType = SPIKE;
-    state.hazards[1].hzState = TICKING;
-    state.hazards[1].textureID = Util::LoadTexture("papa_evil.png");
-    state.hazards[1].acceleration = glm::vec3(0, -9.81f, 0);
-    state.hazards[1].isStatic = false;
-    state.hazards[1].isActive = false;
-    state.hazards[1].position = glm::vec3(3, -2.25, 0);
-    state.hazards[1].velocity = glm::vec3(0, -1, 0);
-    state.hazards[1].initialPosition = glm::vec3(3, -2.25, 0);
-    state.hazards[1].timer = 10.0f;*/
+	state.hazards[1].entityType = HAZARD;
+	state.hazards[1].hzType = SPIKE;
+	state.hazards[1].hzState = TICKING;
+	state.hazards[1].textureID = Util::LoadTexture("spike.png");
+	state.hazards[1].acceleration = glm::vec3(0, -9.81f, 0);
+	state.hazards[1].isStatic = false;
+	state.hazards[1].isActive = false;
+	state.hazards[1].position = glm::vec3(3, -2.25, 0);
+	state.hazards[1].velocity = glm::vec3(0, -1, 0);
+	//state.hazards[1].initialPosition = glm::vec3(3, -2.25, 0);
+	state.hazards[1].timer = 5.0f;
+	
+	state.hazards[1].rows = 3;
+	state.hazards[1].cols = 4;
+	state.hazards[1].idle = new int[4]{ 9, 10, 11, 12 };
+	state.hazards[1].exploding = new int[4]{ 1, 2, 3, 4 };
+	state.hazards[1].ticking = new int[4]{ 5, 6, 7, 8 };
+
+	state.hazards[1].currentAnim = state.hazards[1].idle;
+	state.hazards[1].animFrames = 3;
+	state.hazards[1].animIndex = 0;
+
+	state.hazards[2].entityType = HAZARD;
+	state.hazards[2].hzType = LASER;
+	state.hazards[2].hzState = EXPLODE;
+	state.hazards[2].textureID = Util::LoadTexture("bullet.png");
+	state.hazards[2].acceleration = glm::vec3(0, 0, 0);
+	state.hazards[2].isStatic = false;
+	state.hazards[2].isActive = false;
+	state.hazards[2].position = glm::vec3(3, -2.25, 0);
+	state.hazards[2].velocity = glm::vec3(0, 0, 0);
+	//state.hazards[2].initialPosition = glm::vec3(3, -2.25, 0);
+	state.hazards[2].timer = 10.0f;
+	state.hazards[2].width = 0.4f;
+	state.hazards[2].height = 0.4f;
  
     
     
