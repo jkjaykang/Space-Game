@@ -15,11 +15,13 @@
 
 #include "Map.h"
 
-enum  EntityType { PLAYER, PLATFORM, ENEMY, AOE_DAMAGE, LIFE };
+enum  EntityType { PLAYER, PLATFORM, ENEMY, AOE_DAMAGE, LIFE, HAZARD };
 //enum  lastCollisionEntityType { PLAYER, PLATFORM, ENEMY, BULLET, LETTER};
-enum AIState { IDLE, WALKING, RUNNING, SLOW_DOWN, AOE };
-enum AIType { PAPARAZZI, JOOMBA };
+enum AIState { IDLE, WALKING, RUNNING, SLOW_DOWN, AOE, BOMBING };
+enum AIType { PAPARAZZI, JOOMBA, FLY };
 
+enum HazardState {DEPLOY, TICKING, EXPLODE};
+enum HazardType {BOMB, SPIKE, LASER};
 
 class Entity {
 public:
@@ -28,6 +30,9 @@ public:
 	EntityType lastCollisionType;
 	AIState aiState;
 	AIType aiType;
+
+	HazardState hzState;
+	HazardType hzType;
 
 	Entity* effects;
 	int effects_num;
@@ -58,6 +63,7 @@ public:
 	glm::vec3 position;
 	glm::vec3 velocity;
 	glm::vec3 acceleration;
+	glm::vec3 initialPosition;
 
 	float width;
 	float height;
@@ -79,14 +85,18 @@ public:
 	void CheckCollisionsX(Entity* objects, int objectCount);
 	void CheckCollisionsY(Entity* objects, int objectCount);
 
-	void Update(float deltaTime, Entity* objects, int objectCount, Map* map, Entity* enemies, int enemyCount);
+	void Update(float deltaTime, Entity* objects, int objectCount, Entity* hazards, Map* map, Entity* enemies, int enemyCount);
 	void Render(ShaderProgram* program);
 
 	void Jump();
 	
-	void AI(Entity player, Map* map);
+	void AI(Entity& player, Entity* hazards, Map* map);
 	void AIPaparazzi(Entity player, Map* map);
 	void AIJoomba(Entity player, Map* map);
+	void AIFly(Entity player, Entity* hazards, Map* map);
+
+	void HZ(Entity& player, float deltaTime, Map* map);
+	void HZBomb(Entity player, float deltaTime, Map* map);
 
 	void DrawSpriteFromTextureAtlas(ShaderProgram* program, int index);
 

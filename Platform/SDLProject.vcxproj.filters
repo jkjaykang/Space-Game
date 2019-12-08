@@ -36,12 +36,6 @@
     <ClCompile Include="Level1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Level2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Level3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Effects.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -66,12 +60,6 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Level1.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Level2.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Level3.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Effects.h">
@@ -104,6 +92,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="temp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="bomb.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="fly.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

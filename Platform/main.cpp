@@ -106,8 +106,7 @@ void Initialize() {
 
 	sceneList[0] = new StartScreen();
 	sceneList[1] = new Level1();
-	sceneList[2] = new Level2();
-	sceneList[3] = new Level3();
+	
 	SwitchToScene(sceneList[0]);
 
 	effects = new Effects(projectionMatrix, viewMatrix);

@@ -130,8 +130,6 @@
     <ClCompile Include="Effects.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Level1.cpp" />
-    <ClCompile Include="Level2.cpp" />
-    <ClCompile Include="Level3.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -143,8 +141,6 @@
     <ClInclude Include="Effects.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Level1.h" />
-    <ClInclude Include="Level2.h" />
-    <ClInclude Include="Level3.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="ShaderProgram.h" />
@@ -152,7 +148,9 @@
     <ClInclude Include="Util.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="bomb.png" />
     <Image Include="complete.png" />
+    <Image Include="fly.png" />
     <Image Include="font.png" />
     <Image Include="jackson1.png" />
     <Image Include="me.png" />

@@ -302,13 +302,84 @@ void Entity::AIJoomba(Entity player, Map* map) {
 		break;
 	}
 }
-void Entity::AI(Entity player, Map* map) {//, Entity* effects_sprites, int ef_s_size){
+
+void Entity::AIFly(Entity player, Entity* hazards, Map* map) {
+	switch (aiState) {
+	case IDLE:
+		if (glm::distance(position, player.position) < 3.0f && hazards[0].isActive == false) {
+			aiState = WALKING;
+		}
+		else if (position.y >= initialPosition.y + 0.25)
+		{
+			velocity.y = -2;
+		}
+		else if (position.y <= initialPosition.y - 0.25)
+		{
+			velocity.y = 2;
+		}
+
+		break;
+	case WALKING:
+		hazards[0].position = position;
+		hazards[0].isActive = true;
+		aiState = IDLE;
+		break;
+	}
+}
+
+void Entity::AI(Entity& player, Entity* hazards, Map* map) {//, Entity* effects_sprites, int ef_s_size){
 	switch (aiType) {
 	case PAPARAZZI:
 		AIPaparazzi(player, map);
 		break;
 	case JOOMBA:
 		AIJoomba(player, map);
+		break;
+	case FLY:
+		AIFly(player, hazards, map);
+		break;
+	}
+}
+
+
+void Entity::HZBomb(Entity player, float deltaTime, Map* map)
+{
+	switch (hzState) {
+	case DEPLOY:
+		if (velocity.y == 0)
+		{
+			hzState = TICKING;
+		}
+		break;
+	case TICKING:
+		if (timer <= 0)
+		{
+			hzState = EXPLODE;
+			timer = 10.0f;
+		}
+		else
+		{
+			timer = timer - deltaTime;
+		}
+		
+		break;
+	case EXPLODE:
+		isActive = false;
+		break;
+	}
+}
+
+void Entity::HZ(Entity& player, float deltaTime, Map* map)
+{
+	switch (hzType) {
+	case SPIKE:
+		//AIPaparazzi(player, map);
+		break;
+	case LASER:
+		//AIJoomba(player, map);
+		break;
+	case BOMB:
+		HZBomb(player, deltaTime, map);
 		break;
 	}
 }
@@ -468,7 +539,8 @@ void Entity::animate(float deltaTime)
 		}
 	}
 }
-void Entity::Update(float deltaTime, Entity* objects, int objectCount, Map* map, Entity* enemies, int enemyCount)
+
+void Entity::Update(float deltaTime, Entity* objects, int objectCount, Entity* hazards, Map* map, Entity* enemies, int enemyCount)
 {
 	collidedTop = false;
 	collidedBottom = false;
@@ -489,7 +561,16 @@ void Entity::Update(float deltaTime, Entity* objects, int objectCount, Map* map,
 		CheckCollisionsX(enemies, enemyCount);
 		CheckCollisionsY(enemies, enemyCount);
 	}
-	
+	if (entityType == ENEMY)
+	{
+		AI(*objects, hazards, map);
+		//CheckCollisionsX(&player, 1);
+		//CheckCollisionsY(&player, 1);
+	}
+	if (entityType == HAZARD)
+	{
+		HZ(*objects, deltaTime, map);
+	}
 	animate(deltaTime);
 }
 
