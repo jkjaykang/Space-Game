@@ -76,6 +76,7 @@ public:
     float timer;
     
     bool attacked;
+    bool reflected;
     
     
     Entity();
