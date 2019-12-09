@@ -149,11 +149,17 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="bomb.png" />
+    <Image Include="bullet.png" />
+    <Image Include="bullet_temp.png" />
     <Image Include="complete.png" />
     <Image Include="fly.png" />
     <Image Include="font.png" />
     <Image Include="jackson1.png" />
     <Image Include="me.png" />
+    <Image Include="papa.png" />
+    <Image Include="papa_evil.png" />
+    <Image Include="slash.png" />
+    <Image Include="spike.png" />
     <Image Include="temp.png" />
     <Image Include="test.png" />
     <Image Include="tileset.png" />

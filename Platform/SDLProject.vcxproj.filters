@@ -100,6 +100,24 @@
     <Image Include="fly.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="bullet.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="spike.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="bullet_temp.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="papa.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="papa_evil.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="slash.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Media Include="damage_1.wav">

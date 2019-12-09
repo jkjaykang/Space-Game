@@ -12,16 +12,17 @@
 #include "Entity.h"
 #include "Map.h"
 struct GameState {
-	Entity player;
-	Entity* enemies;
-	Entity* hazards;
-	Map* map;
-	int nextLevel;
+    Entity player;
+    Entity* enemies;
+    Entity* hazards;
+    Map* map;
+    int nextLevel;
 };
 class Scene {
 public:
-	GameState state;
-	virtual void Initialize() = 0;
-	virtual void Update(float deltaTime) = 0;
-	virtual void Render(ShaderProgram* program) = 0;
+    GameState state;
+    Entity sword;
+    virtual void Initialize() = 0;
+    virtual void Update(float deltaTime) = 0;
+    virtual void Render(ShaderProgram* program) = 0;
 };

@@ -36,7 +36,7 @@ glm::mat4 viewMatrix, modelMatrix, projectionMatrix;
 GLuint fontTextureID;
 
 Scene* currentScene;
-Scene* sceneList[4];
+Scene* sceneList[2];
 
 Mix_Music* background_1;
 
@@ -53,28 +53,29 @@ int lives;
 
 
 void SwitchToScene(Scene* scene) {
-	currentScene = scene;
-	currentScene->Initialize();
-}
+    currentScene = scene;
+    currentScene->Initialize();
+}
+
 
 void Initialize() {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
-    displayWindow = SDL_CreateWindow("Platformer!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL);
+    displayWindow = SDL_CreateWindow("Jam de Space!", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 640, 480, SDL_WINDOW_OPENGL);
     SDL_GLContext context = SDL_GL_CreateContext(displayWindow);
     SDL_GL_MakeCurrent(displayWindow, context);
-
-	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096);
-
-	background_1 = Mix_LoadMUS("background.mp3");
-	//Mix_PlayMusic(background_1, -1);
-
-	jump_1 = Mix_LoadWAV("jump_1.wav");
-	jump_2 = Mix_LoadWAV("jump_2.wav");
-
-	fall_1 = Mix_LoadWAV("fall_1.wav");
-
-	footstep = Mix_LoadWAV("footstep.wav");
-
+    
+    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096);
+    
+    background_1 = Mix_LoadMUS("background.mp3");
+    //Mix_PlayMusic(background_1, -1);
+    
+    jump_1 = Mix_LoadWAV("jump_1.wav");
+    jump_2 = Mix_LoadWAV("jump_2.wav");
+    
+    fall_1 = Mix_LoadWAV("fall_1.wav");
+    
+    footstep = Mix_LoadWAV("footstep.wav");
+    
     
 #ifdef _WINDOWS
     glewInit();
@@ -82,13 +83,13 @@ void Initialize() {
     
     glViewport(0, 0, 640, 480);
     
-	program.Load("shaders/vertex_textured.glsl", "shaders/fragment_textured.glsl");
-
-	fontTextureID = Util::LoadTexture("font.png");
+    program.Load("shaders/vertex_textured.glsl", "shaders/fragment_textured.glsl");
+    
+    fontTextureID = Util::LoadTexture("font.png");
     
     viewMatrix = glm::mat4(1.0f);
     modelMatrix = glm::mat4(1.0f);
-	projectionMatrix = glm::ortho(-5.0f, 5.0f, -3.75f, 3.75f, -1.0f, 1.0f);
+    projectionMatrix = glm::ortho(-5.0f, 5.0f, -3.75f, 3.75f, -1.0f, 1.0f);
     
     program.SetProjectionMatrix(projectionMatrix);
     program.SetViewMatrix(viewMatrix);
@@ -98,19 +99,20 @@ void Initialize() {
     
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-
+    
+    
     glClearColor(0.3f, 0.2f, 0.2f, 0.6f);
-
-	lives = 3;
-
-	sceneList[0] = new StartScreen();
-	sceneList[1] = new Level1();
-	
-	SwitchToScene(sceneList[0]);
-
-	effects = new Effects(projectionMatrix, viewMatrix);
-	//effects->Start(SHRINK, 5.0f);
+    
+    lives = 3;
+    
+    sceneList[0] = new StartScreen();
+    sceneList[1] = new Level1();
+    //sceneList[2] = new Level2();
+    //sceneList[3] = new Level3();
+    SwitchToScene(sceneList[0]);
+    
+    effects = new Effects(projectionMatrix, viewMatrix);
+    //effects->Start(SHRINK, 5.0f);
 }
 
 void ProcessInput() {
@@ -125,57 +127,76 @@ void ProcessInput() {
             case SDL_KEYDOWN:
                 switch (event.key.keysym.sym) {
                     case SDLK_SPACE:
-					{
-						currentScene->state.player.Jump();
-						int random = rand() % 2;
-						if (random > 0 && currentScene->state.player.isActive)
-						{
-							//Mix_PlayChannel(-1, jump_1, 0);
-						}
-						else if (currentScene->state.player.isActive)
-						{
-							//Mix_PlayChannel(-1, jump_2, 0);
-						}
-					}
+                    {
+                        currentScene->state.player.Jump();
+                        int random = rand() % 2;
+                        if (random > 0 && currentScene->state.player.isActive)
+                        {
+                            //Mix_PlayChannel(-1, jump_1, 0);
+                        }
+                        else if (currentScene->state.player.isActive)
+                        {
+                            //Mix_PlayChannel(-1, jump_2, 0);
+                        }
+                    }
                         break;
-
-					case SDLK_RETURN:
-						if (currentScene == sceneList[0])
-						{
-							currentScene->state.nextLevel = 1;
-							SwitchToScene(sceneList[currentScene->state.nextLevel]);
-						}
-						break;
-
-					case SDLK_k:
-						//currentScene->state.player.isActive = false;
-						effects->Start(SHAKE, 2.0f);
-						break;
+                    
+                    case SDLK_f:
+						currentScene->state.player.Attack();
+                        /*if(currentScene->state.player.timer == 50.0f){
+                            currentScene->state.player.timer -= 1.0f;
+                            currentScene->sword.timer -= 1.0f;
+                            currentScene->sword.isActive = true;
+                            currentScene->sword.position = currentScene -> state.player.position;
+							if (currentScene->state.player.facingLeft())
+							{
+								currentScene->sword.position.x -= 0.5f;
+							}
+							else
+							{
+								currentScene->sword.position.x += 0.5f;
+							}
+                        }*/
+                        
+                        break;
+                        
+                    case SDLK_RETURN:
+                        if (currentScene == sceneList[0])
+                        {
+                            currentScene->state.nextLevel = 1;
+                            SwitchToScene(sceneList[currentScene->state.nextLevel]);
+                        }
+                        break;
+                        
+                    case SDLK_k:
+                        //currentScene->state.player.isActive = false;
+                        effects->Start(SHAKE, 2.0f);
+                        break;
                 }
                 break;
         }
     }
     
-	currentScene->state.player.velocity.x = 0;
-	//currentScene->state.player.velocity.x -= currentScene->state.player.velocity.x/2;
+    currentScene->state.player.velocity.x = 0;
+    //currentScene->state.player.velocity.x -= currentScene->state.player.velocity.x/2;
     // Check for pressed/held keys below
     const Uint8 *keys = SDL_GetKeyboardState(NULL);
     
-	if (keys[SDL_SCANCODE_A] && keys[SDL_SCANCODE_LSHIFT])
-	{
-		currentScene->state.player.velocity.x = -5.0f;
-	}
-	else if (keys[SDL_SCANCODE_D] && keys[SDL_SCANCODE_LSHIFT])
-	{
-		currentScene->state.player.velocity.x = 5.0f;
-	}
+    if (keys[SDL_SCANCODE_A] && keys[SDL_SCANCODE_LSHIFT])
+    {
+        currentScene->state.player.velocity.x = -5.0f;
+    }
+    else if (keys[SDL_SCANCODE_D] && keys[SDL_SCANCODE_LSHIFT])
+    {
+        currentScene->state.player.velocity.x = 5.0f;
+    }
     else if (keys[SDL_SCANCODE_A])
     {
-		currentScene->state.player.velocity.x = -3.0f;
+        currentScene->state.player.velocity.x = -3.0f;
     }
     else if  (keys[SDL_SCANCODE_D])
     {
-		currentScene->state.player.velocity.x = 3.0f;
+        currentScene->state.player.velocity.x = 3.0f;
     }
 }
 
@@ -196,73 +217,74 @@ void Update() {
     
     while (deltaTime >= FIXED_TIMESTEP) {
         
-		currentScene->Update(FIXED_TIMESTEP);
+        currentScene->Update(FIXED_TIMESTEP);
         deltaTime -= FIXED_TIMESTEP;
     }
     
     accumulator = deltaTime;
-
-	effects->Update(FIXED_TIMESTEP);
-
-	//if (currentScene->state.player.currentAnim == currentScene->state.player.walkRight);
-	//{
-	//	Mix_PlayChannel(-1, footstep, 0);
-	//}
-
-	if (currentScene->state.player.isActive == false)
-	{
-		lives = lives - 1;
-	}
-	if (currentScene->state.player.isActive == false)
-	{
-		currentScene->state.player.isActive = true;
-	}
-
-
-	viewMatrix = glm::mat4(1.0f);
-	if (currentScene->state.player.position.x > 5) {
-		viewMatrix = glm::translate(viewMatrix,
-			glm::vec3(-currentScene->state.player.position.x, 3.75, 0));
-	}
-	else {
-		viewMatrix = glm::translate(viewMatrix, glm::vec3(-5, 3.75, 0));
-	}
-	viewMatrix = glm::translate(viewMatrix, effects->viewTranslate);
-
+    
+    effects->Update(FIXED_TIMESTEP);
+    
+    //if (currentScene->state.player.currentAnim == currentScene->state.player.walkRight);
+    //{
+    //    Mix_PlayChannel(-1, footstep, 0);
+    //}
+    
+    if (currentScene->state.player.isActive == false)
+    {
+        lives = lives - 1;
+    }
+    if (currentScene->state.player.isActive == false)
+    {
+        currentScene->state.player.isActive = true;
+    }
+    
+    
+    viewMatrix = glm::mat4(1.0f);
+    if (currentScene->state.player.position.x > 5) {
+        viewMatrix = glm::translate(viewMatrix,
+                                    glm::vec3(-currentScene->state.player.position.x, 3.75, 0));
+    }
+    else {
+        viewMatrix = glm::translate(viewMatrix, glm::vec3(-5, 3.75, 0));
+    }
+    viewMatrix = glm::translate(viewMatrix, effects->viewTranslate);
+    
 }
 
 
 void Render() {
-	glUseProgram(program.programID);
-    glClear(GL_COLOR_BUFFER_BIT);
-	program.SetViewMatrix(viewMatrix);
+    glUseProgram(program.programID);
     
-	currentScene->Render(&program);
-
-	if (currentScene == sceneList[0])
-	{
-		Util::DrawText(&program, fontTextureID, "Return of the King", 0.4f, 0.1f, glm::vec3(0.8f, -2, 0));
-		Util::DrawText(&program, fontTextureID, "press enter to start", 0.3f, 0.1f, glm::vec3(1.0f, -4, 0));
-	}
-	std::string s = std::to_string(lives);
-	if (currentScene->state.player.position.x > 5) {
-		Util::DrawText(&program, fontTextureID, s, 1.0f, 0.1f, glm::vec3(currentScene->state.player.position.x - 4.5f, -0.5, 0));
-	}
-	else {
-		Util::DrawText(&program, fontTextureID, s, 1.0f, 0.1f, glm::vec3(0.5f, -0.5, 0));
-	}
-	//program.SetLightPosition(currentScene->state.player.position);
-	program.SetLightPosition2(glm::vec3(8, 0, 0));
-	program.SetLightPosition2(glm::vec3(8,-5,0));
-	effects->Render();
-	SDL_GL_SwapWindow(displayWindow);
+    glClear(GL_COLOR_BUFFER_BIT);
+    program.SetViewMatrix(viewMatrix);
+    
+    currentScene->Render(&program);
+    
+    if (currentScene == sceneList[0])
+    {
+        Util::DrawText(&program, fontTextureID, "Return of the King", 0.4f, 0.1f, glm::vec3(0.8f, -2, 0));
+        Util::DrawText(&program, fontTextureID, "press enter to start", 0.3f, 0.1f, glm::vec3(1.0f, -4, 0));
+    }
+    std::string s = std::to_string(lives);
+    if (currentScene->state.player.position.x > 5) {
+        Util::DrawText(&program, fontTextureID, s, 1.0f, 0.1f, glm::vec3(currentScene->state.player.position.x - 4.5f, -0.5, 0));
+    }
+    else {
+        Util::DrawText(&program, fontTextureID, s, 1.0f, 0.1f, glm::vec3(0.5f, -0.5, 0));
+    }
+    //program.SetLightPosition(currentScene->state.player.position);
+    program.SetLightPosition2(glm::vec3(8, 0, 0));
+    program.SetLightPosition2(glm::vec3(8,-5,0));
+    effects->Render();
+    SDL_GL_SwapWindow(displayWindow);
 }
 
 void Shutdown() {
-	Mix_FreeMusic(background_1);
-	Mix_FreeChunk(jump_1);
-	Mix_FreeChunk(jump_2);
-	Mix_FreeChunk(fall_1);
+    Mix_FreeMusic(background_1);
+    Mix_FreeChunk(jump_1);
+    Mix_FreeChunk(jump_2);
+    Mix_FreeChunk(fall_1);
     SDL_Quit();
 }
 
@@ -270,8 +292,8 @@ int main(int argc, char* argv[]) {
     Initialize();
     
     while (gameIsRunning) {
-		if (currentScene->state.nextLevel >= 0) SwitchToScene(sceneList[currentScene->state.nextLevel]);
-
+        if (currentScene->state.nextLevel >= 0) SwitchToScene(sceneList[currentScene->state.nextLevel]);
+        
         ProcessInput();
         Update();
         Render();
