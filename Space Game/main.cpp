@@ -181,8 +181,10 @@ void ProcessInput() {
                 break;
         }
     }
+    if(currentScene->state.player.isActive){
+        currentScene->state.player.velocity.x = 0;
+    }
     
-    currentScene->state.player.velocity.x = 0;
     //currentScene->state.player.velocity.x -= currentScene->state.player.velocity.x/2;
     // Check for pressed/held keys below
     const Uint8 *keys = SDL_GetKeyboardState(NULL);

@@ -69,6 +69,7 @@ void Level1::Initialize() {
 
     
     state.enemies = level1_enemies;
+    /*
     state.enemies[0].entityType = ENEMY;
     state.enemies[0].textureID = Util::LoadTexture("fly.png");
     state.enemies[0].acceleration = glm::vec3(0, 0, 0);
@@ -78,7 +79,11 @@ void Level1::Initialize() {
     state.enemies[0].aiType = FLY;
     state.enemies[0].velocity = glm::vec3(0, -1, 0);
     state.enemies[0].initialPosition = glm::vec3(3, -0.35f, 0);
-    
+    */
+    state.enemies[0] = Entity("ENEMY", "FLY", glm::vec3(3, -0.35f, 0));
+    state.enemies[1] = Entity("ENEMY", "SPIKER", glm::vec3(13.0f, -2.25f, 0));
+    state.enemies[2] = Entity("ENEMY", "GUNNER", glm::vec3(15.0f, -2.25f, 0));
+    /*
     state.enemies[1].entityType = ENEMY;
     state.enemies[1].textureID = Util::LoadTexture("fly.png");
     state.enemies[1].acceleration = glm::vec3(0, -9.8f, 0);
@@ -100,8 +105,14 @@ void Level1::Initialize() {
     state.enemies[2].velocity = glm::vec3(5.0f, 0, 0);
     state.enemies[2].timer = 50.0f;
     //state.enemies[1].initialPosition = glm::vec3(3, -2.25, 0);
-    
+    */
     state.hazards = level1_hazards;
+    
+    state.hazards[0] = Entity("HAZARD", "BOMB", glm::vec3(3, -2.25, 0));
+    state.hazards[1] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
+    state.hazards[2] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
+    
+    /*
     state.hazards[0].entityType = HAZARD;
     state.hazards[0].hzType = BOMB;
     state.hazards[0].hzState = DEPLOY;
@@ -160,6 +171,7 @@ void Level1::Initialize() {
     state.hazards[2].timer = 10.0f;
     state.hazards[2].width = 0.4f;
     state.hazards[2].height = 0.4f;
+     */
 }
 
 void Level1::Update(float deltaTime) {
