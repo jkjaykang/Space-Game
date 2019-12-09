@@ -7,12 +7,14 @@ Entity::Entity()
     isStatic = true;
     isActive = true;
     position = glm::vec3(0);
-	scale = glm::vec3(2.0f, 2.0f, 2.0f);
+	scale = glm::vec3(4.0f, 4.0f, 2.0f);
     speed = 0;
     width = 1;
     height = 1;
     timer = 2.0f;
     footstep = Mix_LoadWAV("footstep.wav");
+	isAlive = true;
+	attacking = false;
 }
 
 bool Entity::CheckCollision(Entity& other)
@@ -30,8 +32,15 @@ bool Entity::CheckCollision(Entity& other)
 			if (other.entityType == ENEMY)
 			{
 				isActive = false;
+				//isAlive = false;
+				
+				//velocity.x = -10.0f;
+				//velocity.y = 3.0f;
 			}
 			if (other.entityType == HAZARD && other.hzType == SPIKE && other.hzState == EXPLODE) {
+				isActive = false;
+			}
+			if (other.entityType == HAZARD && other.hzType == BOMB && other.hzState == EXPLODE) {
 				isActive = false;
 			}
 			if (other.entityType == HAZARD && other.hzType == SPIKE && other.hzState == TICKING) {
@@ -356,7 +365,7 @@ void Entity::AISpiker(Entity player, Entity* hazards, int hazard_count, Map* map
 			if (hazards[i].hzType == SPIKE && hazards[i].isActive == false) {
 				//hazards[i].acceleration.y = -9.81;
 				hazards[i].position.x = player.position.x;
-				hazards[i].position.y = player.position.y - 0.25f;
+				hazards[i].position.y = -5.5f;
 				hazards[i].isActive = true;
 				//hazards[i].hzState = TICKING;
 				//hazards[i].timer = 4.0f;
@@ -372,7 +381,10 @@ void Entity::AISpiker(Entity player, Entity* hazards, int hazard_count, Map* map
 void Entity::AIGunner(Entity player, Entity* hazards, int hazard_count, Map* map) {
 	switch (aiState) {
 	case IDLE:
-		velocity = glm::vec3(0, 0, 0);
+		velocity = glm::vec3(0.0f, 0, 0);
+		if ((glm::distance(position, player.position) <= 7.5f)) {
+			aiState = WALKING;
+		}
 		break;
 	case WALKING:
 		if (CheckPartialOnLedge(map)) {
@@ -427,6 +439,7 @@ void Entity::AIGunner(Entity player, Entity* hazards, int hazard_count, Map* map
 				}
 				hazards[i].isActive = true;
 				hazards[i].isStatic = false;
+				hazards[i].textureID = Util::LoadTexture("bullet.png");
 				hazards[i].hzState = EXPLODE;
 				hazards[i].timer = 1.5f;
 
@@ -438,7 +451,6 @@ void Entity::AIGunner(Entity player, Entity* hazards, int hazard_count, Map* map
 		break;
 	}
 }
-
 
 void Entity::AIBoss(Entity player, Entity* hazards, int hazard_count, Map* map) {
 	switch (aiState) {
@@ -498,7 +510,8 @@ void Entity::HZBomb(Entity player, float deltaTime, Map* map)
             {
 				timer = 0.1f;
                 hzState = EXPLODE;
-            
+				width = 3;
+				height = 2;
             }
             else
             {
@@ -511,6 +524,9 @@ void Entity::HZBomb(Entity player, float deltaTime, Map* map)
 				timer = 3.0f;
 				isActive = false;
 				hzState = DEPLOY;
+				width = 1;
+				height = 1;
+
 			}
 			else
 			{
@@ -534,7 +550,7 @@ void Entity::HZSpike(Entity player, float deltaTime, Map* map)
             if (timer <= 0)
             {
                 hzState = EXPLODE;
-                timer = 5.0f;
+                timer = 2.0f;
                 isActive = true;
             }
 			else {
@@ -544,7 +560,7 @@ void Entity::HZSpike(Entity player, float deltaTime, Map* map)
         case EXPLODE:
             if(timer <= 0.0f){
                 isActive = false;
-				timer = 5.0f;
+				timer = 2.0f;
 				hzState = DEPLOY;
             }
 			else
@@ -556,6 +572,26 @@ void Entity::HZSpike(Entity player, float deltaTime, Map* map)
     }
 }
 
+void Entity::HZLaser(Entity player, float deltaTime, Map* map)
+{
+	switch (hzState) {
+	case DEPLOY:
+		break;
+	case TICKING:
+		break;
+	case EXPLODE:
+		std::cout << timer << std::endl;
+		//velocity.x += .05f;
+		if (timer <= 0.0f) {
+			//std :: cout << "FALSE" << std :: endl;
+			isActive = false;
+		}
+		timer -= deltaTime;
+
+		break;
+	}
+}
+
 void Entity::HZ(Entity& player, float deltaTime, Map* map)
 {
     switch (hzType) {
@@ -563,8 +599,8 @@ void Entity::HZ(Entity& player, float deltaTime, Map* map)
             HZSpike(player, deltaTime, map);
             break;
         case LASER:
-            //AIJoomba(player, map);
-            break;
+			HZLaser(player, deltaTime, map);
+			break;
         case BOMB:
             HZBomb(player, deltaTime, map);
             break;
@@ -624,8 +660,19 @@ int Entity::stepping()
 
 void Entity::animate(float deltaTime)
 {
-	
-		if (velocity.y > 0 && velocity.x >= 0)
+		if (attacking)
+		{
+			animFrames = 4;
+			if (facingLeft())
+			{
+				currentAnim = attackLeft;
+			}
+			else
+			{
+				currentAnim = attack;
+			}
+		}
+		else if (velocity.y > 0 && velocity.x >= 0)
 		{
 			animFrames = 7;
 			if (facingLeft() && velocity.x == 0)
@@ -722,6 +769,10 @@ void Entity::animate(float deltaTime)
 			}
 			else if (animIndex >= animFrames)
 			{
+				if (currentAnim == attack || currentAnim == attackLeft)
+				{
+					attacking = false;
+				}
 				animIndex = 0;
 			}
 		}
@@ -770,12 +821,19 @@ void Entity::Update(float deltaTime, Entity* objects, int objectCount, Entity* h
     velocity += acceleration * deltaTime;
     
     position.y += velocity.y * deltaTime; // Move on Y
-    CheckCollisionsY(map);
-    CheckCollisionsY(objects, objectCount); // Fix if needed
+	if (hzType != SPIKE)
+	{
+		CheckCollisionsY(map);
+		CheckCollisionsY(objects, objectCount); // Fix if needed
+	}
+    
     
     position.x += velocity.x * deltaTime; // Move on X
-    CheckCollisionsX(map);
-    CheckCollisionsX(objects, objectCount); // Fix if needed
+	if (hzType != SPIKE)
+	{
+		CheckCollisionsX(map);
+		CheckCollisionsX(objects, objectCount); // Fix if needed
+	}
     
     if(entityType == SWORD){
         //std :: cout << timer << std :: endl;
