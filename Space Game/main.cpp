@@ -142,7 +142,7 @@ void ProcessInput() {
                         break;
                     
                     case SDLK_f:
-                        if(currentScene->state.player.timer == 50.0f){
+                        if(currentScene->state.player.timer == 50.0f && currentScene->state.player.isActive){
                             currentScene->state.player.timer -= 1.0f;
                             currentScene->sword.timer -= 1.0f;
                             currentScene->sword.isActive = true;
@@ -171,6 +171,12 @@ void ProcessInput() {
                         //currentScene->state.player.isActive = false;
                         effects->Start(SHAKE, 2.0f);
                         break;
+                        
+                    case SDLK_r:
+                        sceneList[1] = new Level1();
+                        currentScene->state.nextLevel = 1;
+                        SwitchToScene(sceneList[currentScene->state.nextLevel]);
+                        break;
                 }
                 break;
         }
@@ -181,19 +187,19 @@ void ProcessInput() {
     // Check for pressed/held keys below
     const Uint8 *keys = SDL_GetKeyboardState(NULL);
     
-    if (keys[SDL_SCANCODE_A] && keys[SDL_SCANCODE_LSHIFT])
+    if (keys[SDL_SCANCODE_A] && keys[SDL_SCANCODE_LSHIFT] && currentScene->state.player.isActive)
     {
         currentScene->state.player.velocity.x = -5.0f;
     }
-    else if (keys[SDL_SCANCODE_D] && keys[SDL_SCANCODE_LSHIFT])
+    else if (keys[SDL_SCANCODE_D] && keys[SDL_SCANCODE_LSHIFT] && currentScene->state.player.isActive)
     {
         currentScene->state.player.velocity.x = 5.0f;
     }
-    else if (keys[SDL_SCANCODE_A])
+    else if (keys[SDL_SCANCODE_A] && currentScene->state.player.isActive)
     {
         currentScene->state.player.velocity.x = -3.0f;
     }
-    else if  (keys[SDL_SCANCODE_D])
+    else if  (keys[SDL_SCANCODE_D] && currentScene->state.player.isActive)
     {
         currentScene->state.player.velocity.x = 3.0f;
     }
@@ -231,13 +237,22 @@ void Update() {
     
     if (currentScene->state.player.isActive == false)
     {
-        lives = lives - 1;
+        if(lives > 0){
+            lives = lives - 1;
+        }
+        
+        /*
+        for(int i = 0; i < 3; ++i){
+            currentScene -> state.enemies[i].velocity = glm::vec3(0,0,0);
+        }
+         */
     }
+    /*
     if (currentScene->state.player.isActive == false)
     {
         currentScene->state.player.isActive = true;
     }
-    
+    */
     
     viewMatrix = glm::mat4(1.0f);
     if (currentScene->state.player.position.x > 5) {
@@ -265,6 +280,15 @@ void Render() {
         Util::DrawText(&program, fontTextureID, "Return of the King", 0.4f, 0.1f, glm::vec3(0.8f, -2, 0));
         Util::DrawText(&program, fontTextureID, "press enter to start", 0.3f, 0.1f, glm::vec3(1.0f, -4, 0));
     }
+    
+    if(!currentScene->state.player.isActive){
+        glm::vec3 player_position = currentScene -> state.player.position;
+        
+        
+        Util::DrawText(&program, fontTextureID, "You Lose", 0.5f, 0.1f, glm::vec3(player_position.x - 4.5f, player_position.y + 2.0f, 0));
+        Util::DrawText(&program, fontTextureID, "Press R to Start Again", 0.3f, 0.01f, glm::vec3(player_position.x- 4.5f, player_position.y + 1.0f, 0));
+    }
+    
     std::string s = std::to_string(lives);
     if (currentScene->state.player.position.x > 5) {
         Util::DrawText(&program, fontTextureID, s, 1.0f, 0.1f, glm::vec3(currentScene->state.player.position.x - 4.5f, -0.5, 0));

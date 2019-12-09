@@ -97,6 +97,7 @@ public:
     
     void Jump();
     void Attack();
+    void Knockback(Entity& obj, Entity& reference);
     
     void AI(Entity& player, Entity* hazards, int hazard_count, Map* map);
     void AIPaparazzi(Entity player, Map* map);
