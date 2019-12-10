@@ -12,6 +12,9 @@ Entity::Entity()
     width = 1;
     height = 1;
     timer = 2.0f;
+	slash = Mix_LoadWAV("slash.wav");
+	jump = Mix_LoadWAV("jump.wav");
+
     footstep = Mix_LoadWAV("footstep.wav");
 	isAlive = true;
 	attacking = false;
@@ -386,6 +389,11 @@ void Entity::Jump()
 {
     if (collidedBottom)
     {
+		if (entityType == PLAYER)
+		{
+			Mix_PlayChannel(-1, jump, 0);
+
+		}
         velocity.y = 4.0f;
         /*if (collidedBottom)
          {
@@ -397,6 +405,7 @@ void Entity::Jump()
 void Entity::Attack(Entity* sword)
 {
 	if (timer == 50.0f) {
+		Mix_PlayChannel(-1, slash, 0);
 		attacking = true;
 		timer -= 1.0f;
 		sword->timer -= 1.0f;
@@ -787,7 +796,7 @@ void Entity::DrawSpriteFromTextureAtlas(ShaderProgram* program, int index)
 
 bool Entity::facingLeft()
 {
-    if (currentAnim == idleLeft || currentAnim == walkLeft || currentAnim == jumpUpLeft || currentAnim == jumpDownLeft || currentAnim == attackLeft)
+    if (currentAnim == idleLeft || currentAnim == walkLeft || currentAnim == jumpUpLeft || currentAnim == jumpDownLeft || currentAnim == attackLeft || currentAnim == runLeft)
     {
         return true;
     }

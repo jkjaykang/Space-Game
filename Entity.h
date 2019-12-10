@@ -38,6 +38,8 @@ public:
     GLuint textureID;
     
     Mix_Chunk* footstep;
+	Mix_Chunk* slash;
+	Mix_Chunk* jump;
     
     int cols;
     int rows;
@@ -53,6 +55,8 @@ public:
     int* runRight;
     int* runLeft;
     int* currentAnim;
+	int* attack;
+	int* attackLeft;
 
 	int* idle;
 	int* ticking;
@@ -78,10 +82,19 @@ public:
     float timer;
     
 	bool attacked;
+	bool attacking;
+
+	bool isAlive;
+	
+	bool reflected;
     
     Entity();
     
+	void Knockback(Entity& obj, Entity& reference);
+
     bool CheckCollision(Entity& other);
+
+
     
     void CheckCollisionsX(Map* map);
     void CheckCollisionsY(Map* map);
@@ -92,15 +105,13 @@ public:
     void CheckCollisionsX(Entity* objects, int objectCount);
     void CheckCollisionsY(Entity* objects, int objectCount);
     
-    void Update(float deltaTime, Entity* objects, int objectCount, Entity* hazards, int hazard_count, Map* map, Entity* enemies, int enemyCount);
+    void Update(float deltaTime, Entity* objects, int objectCount, Entity* hazards, int hazard_count, Map* map, Entity* enemies, int enemyCount, Entity* sword, Entity* player);
     void Render(ShaderProgram* program);
     
     void Jump();
-	void Attack();
+	void Attack(Entity* sword);
     
     void AI(Entity& player, Entity* hazards, int hazard_count, Map* map);
-    void AIPaparazzi(Entity player, Map* map);
-    void AIJoomba(Entity player, Map* map);
     void AISpiker(Entity player, Entity* hazards, int hazard_count, Map* map);
     void AIGunner(Entity player, Entity* hazards, int hazard_count,Map* map);
     
@@ -111,14 +122,16 @@ public:
     void HZ(Entity& player, float deltaTime, Map* map);
     void HZBomb(Entity player, float deltaTime, Map* map);
     void HZSpike(Entity player, float deltaTime, Map* map);
-    
+	void HZLaser(Entity player, float deltaTime, Map* map);
+
     void DrawSpriteFromTextureAtlas(ShaderProgram* program, int index);
     
     bool facingLeft();
     int stepping();
     
-    void animate(float deltaTime);
+    void animate(float deltaTime, Entity* sword);
 	void animateHz(float deltaTime);
+	void animateSw(float deltaTime, Entity* player);
     
     bool collidedTop;
     bool collidedBottom;
