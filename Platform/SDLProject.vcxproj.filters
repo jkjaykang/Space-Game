@@ -70,19 +70,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="me.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="tileset.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="font.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="jackson1.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="walk.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="test.png">
@@ -101,12 +92,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="spike.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="papa.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="papa_evil.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="slash.png">
@@ -129,9 +114,6 @@
     <Media Include="jump_2.wav">
       <Filter>Resource Files</Filter>
     </Media>
-    <Media Include="background.mp3">
-      <Filter>Resource Files</Filter>
-    </Media>
     <Media Include="footstep.wav">
       <Filter>Resource Files</Filter>
     </Media>
@@ -145,6 +127,12 @@
       <Filter>Resource Files</Filter>
     </Media>
     <Media Include="music.mp3">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="explosion.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="laser.wav">
       <Filter>Resource Files</Filter>
     </Media>
   </ItemGroup>

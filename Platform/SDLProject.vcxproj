@@ -154,25 +154,21 @@
     <Image Include="fly.png" />
     <Image Include="font.png" />
     <Image Include="gunner.png" />
-    <Image Include="jackson1.png" />
-    <Image Include="me.png" />
-    <Image Include="papa.png" />
-    <Image Include="papa_evil.png" />
     <Image Include="slash.png" />
     <Image Include="spike.png" />
     <Image Include="spiker.png" />
     <Image Include="temp.png" />
     <Image Include="test.png" />
     <Image Include="tileset.png" />
-    <Image Include="walk.png" />
   </ItemGroup>
   <ItemGroup>
-    <Media Include="background.mp3" />
+    <Media Include="explosion.wav" />
     <Media Include="footstep.wav" />
     <Media Include="hit.wav" />
     <Media Include="jump.wav" />
     <Media Include="jump_1.wav" />
     <Media Include="jump_2.wav" />
+    <Media Include="laser.wav" />
     <Media Include="music.mp3" />
     <Media Include="slash.wav" />
   </ItemGroup>

@@ -1,22 +1,22 @@
 #include "Level1.h"
-#define LEVEL1_WIDTH 49
+#define LEVEL1_WIDTH 70
 #define LEVEL1_HEIGHT 8
 
-#define ENEMIES_COUNT 3
+#define ENEMIES_COUNT 4
 //#define JOOMBA_COUNT 1
-#define HAZARD_COUNT 3
+#define HAZARD_COUNT 11
 
 
 unsigned int level1_data[] =
 {
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,1,2,0,0,0,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,1,2,2,0,0,0,0,0,0,0,0,1,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,2,2,2,1,1,1,1,1,1,1,1,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-    3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
+    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,
+    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,2,0,0,0,0,0,0,0,0,0,0,0,0,
+    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,1,2,0,0,0,0,0,0,0,1,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,0,0,0,0,0,0,0,0,0,0,0,0,
+    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,1,2,2,0,0,0,0,0,0,1,2,2,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,1,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,
+    3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,2,2,2,1,1,1,1,1,1,2,2,2,2,2,1,1,1,1,1,0,1,1,1,0,1,1,1,1,1,2,2,2,1,1,1,1,1,1,1,1,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+    3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
 };
 
 Entity level1_enemies[ENEMIES_COUNT];
@@ -30,10 +30,11 @@ void Level1::Initialize() {
 	state.player.entityType = PLAYER;
 	state.player.isStatic = false;
 
+	state.player.height = 1.0f;
 	state.player.width = 0.5f;
 
-	state.player.position = glm::vec3(6, -2, 0);
-	state.player.acceleration = glm::vec3(0, -9.81f, 0);
+	state.player.position = glm::vec3(1, -2, 0);
+	state.player.acceleration = glm::vec3(0, -6.81f, 0);
 	state.player.textureID = Util::LoadTexture("temp.png");
 	state.player.cols = 16;
 	state.player.rows = 8;
@@ -72,26 +73,52 @@ void Level1::Initialize() {
 
 	state.enemies = level1_enemies;
 
-	state.enemies[0] = Entity("ENEMY", "FLY", glm::vec3(3, -0.35f, 0));
-	state.enemies[1] = Entity("ENEMY", "SPIKER", glm::vec3(13.0f, -3.25f, 0));
-	state.enemies[2] = Entity("ENEMY", "GUNNER", glm::vec3(15.0f, -3.25f, 0));
+	//state.enemies[0] = Entity("ENEMY", "FLY", glm::vec3(3, -0.35f, 0));
+	//state.enemies[1] = Entity("ENEMY", "SPIKER", glm::vec3(13.0f, -3.25f, 0));
+	//state.enemies[2] = Entity("ENEMY", "GUNNER", glm::vec3(15.0f, -3.25f, 0));
 	
+	state.enemies[0] = Entity("ENEMY", "GUNNER", glm::vec3(12.0f, -3.25f, 0));
+	state.enemies[1] = Entity("ENEMY", "GUNNER", glm::vec3(20.0f, -3.25f, 0));
 
+	state.enemies[2] = Entity("ENEMY", "SPIKER", glm::vec3(34.0f, -3.25f, 0));
 
+	state.enemies[3] = Entity("ENEMY", "FLY", glm::vec3(16.0f, -0.35f, 0));
+	//state.enemies[3] = Entity("ENEMY", "SPIKER", glm::vec3(2.0f, -3.25f, 0));
+	
 	state.hazards = level1_hazards;
 
-	state.hazards[0] = Entity("HAZARD", "BOMB", glm::vec3(3, -2.25, 0));
-	state.hazards[1] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
-	state.hazards[2] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
+	//state.hazards[0] = Entity("HAZARD", "BOMB", glm::vec3(3, -2.25, 0));
+	//state.hazards[1] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
+	//state.hazards[2] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
  
     
+	state.hazards[0] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
+	state.hazards[1] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
+	state.hazards[2] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
+	state.hazards[3] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
+	state.hazards[4] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
+	state.hazards[5] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
+	state.hazards[6] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
+	state.hazards[7] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
+	state.hazards[8] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
+	state.hazards[9] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
+	state.hazards[10] = Entity("HAZARD", "BOMB", glm::vec3(3, -2.25, 0));
+
+
+	state.enemies[0].hazardList.push_back(&state.hazards[0]);
+	state.enemies[0].hazardList.push_back(&state.hazards[1]);
+	state.enemies[0].hazardList.push_back(&state.hazards[2]);
+
+	state.enemies[1].hazardList.push_back(&state.hazards[3]);
+	state.enemies[1].hazardList.push_back(&state.hazards[4]);
+	state.enemies[1].hazardList.push_back(&state.hazards[5]);
     
-   
-    
-    
-    
-    
-    
+	state.enemies[2].hazardList.push_back(&state.hazards[6]);
+	state.enemies[2].hazardList.push_back(&state.hazards[7]);
+
+	state.enemies[3].hazardList.push_back(&state.hazards[10]);
+	//state.enemies[3].hazardList.push_back(&state.hazards[9]);
+
     
 }
 

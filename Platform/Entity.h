@@ -8,10 +8,12 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include <SDL_mixer.h>
+#include <vector>
 
 #include "glm/mat4x4.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "ShaderProgram.h"
+
 
 #include "Map.h"
 //enum  EntityType { PLAYER, PLATFORM, ENEMY, AOE_DAMAGE, LIFE, HAZARD };
@@ -41,6 +43,8 @@ public:
 	Mix_Chunk* slash;
 	Mix_Chunk* jump;
 	Mix_Chunk* hit;
+	Mix_Chunk* explosion;
+	Mix_Chunk* laser;
     
     int cols;
     int rows;
@@ -75,6 +79,8 @@ public:
     glm::vec3 acceleration;
     glm::vec3 initialPosition;
 	glm::vec3 scale;
+
+	std::vector<Entity*> hazardList;
     
     float width;
     float height;
@@ -114,13 +120,13 @@ public:
     void Jump();
 	void Attack(Entity* sword);
     
-    void AI(Entity& player, Entity* hazards, int hazard_count, Map* map);
-    void AISpiker(Entity player, Entity* hazards, int hazard_count, Map* map);
-    void AIGunner(Entity player, Entity* hazards, int hazard_count,Map* map);
+    void AI(Entity& player, Entity* hazards,  int hazard_count, float deltaTime, Map* map);
+    void AISpiker(Entity player, Entity* hazards, int hazard_count, float deltaTime, Map* map);
+    void AIGunner(Entity player, Entity* hazards,  int hazard_count, float deltaTime, Map* map);
     
     void AIBoss(Entity player, Entity* hazards, int hazard_count,Map* map);
     
-    void AIFly(Entity player, Entity* hazards, int hazard_count,Map* map);
+    void AIFly(Entity player, Entity* hazards, int hazard_count, float deltaTime,Map* map);
     
     void HZ(Entity& player, float deltaTime, Map* map);
     void HZBomb(Entity player, float deltaTime, Map* map);

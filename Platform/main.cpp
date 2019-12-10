@@ -195,11 +195,11 @@ void ProcessInput() {
     const Uint8 *keys = SDL_GetKeyboardState(NULL);
 	if (currentScene->state.player.isActive)
 	{
-		if (keys[SDL_SCANCODE_A] && keys[SDL_SCANCODE_LSHIFT])
+		if (keys[SDL_SCANCODE_A] && keys[SDL_SCANCODE_LSHIFT] && currentScene->state.player.velocity.y == 0 )
 		{
 			currentScene->state.player.velocity.x = -5.0f;
 		}
-		else if (keys[SDL_SCANCODE_D] && keys[SDL_SCANCODE_LSHIFT])
+		else if (keys[SDL_SCANCODE_D] && keys[SDL_SCANCODE_LSHIFT] && currentScene->state.player.velocity.y == 0)
 		{
 			currentScene->state.player.velocity.x = 5.0f;
 		}
@@ -249,10 +249,10 @@ void Update() {
     {
         lives = lives - 1;
     }
-    if (currentScene->state.player.isActive == false)
+    /*if (currentScene->state.player.isActive == false)
     {
         currentScene->state.player.isActive = true;
-    }
+    }*/
     
     
     viewMatrix = glm::mat4(1.0f);
