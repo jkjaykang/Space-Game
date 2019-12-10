@@ -38,6 +38,9 @@ public:
     GLuint textureID;
     
     Mix_Chunk* footstep;
+	Mix_Chunk* slash;
+	Mix_Chunk* jump;
+	Mix_Chunk* hit;
     
     int cols;
     int rows;
@@ -80,10 +83,21 @@ public:
     float timer;
     
 	bool attacked;
+	bool attacking;
+
+	bool isAlive;
+	
+	bool reflected;
     
     Entity();
+	Entity(std::string newEntityType, std::string newType, glm::vec3 newPosition);
+
     
+	void Knockback(Entity& obj, Entity& reference);
+
     bool CheckCollision(Entity& other);
+
+
     
     void CheckCollisionsX(Map* map);
     void CheckCollisionsY(Map* map);
@@ -94,11 +108,11 @@ public:
     void CheckCollisionsX(Entity* objects, int objectCount);
     void CheckCollisionsY(Entity* objects, int objectCount);
     
-    void Update(float deltaTime, Entity* objects, int objectCount, Entity* hazards, int hazard_count, Map* map, Entity* enemies, int enemyCount);
+    void Update(float deltaTime, Entity* objects, int objectCount, Entity* hazards, int hazard_count, Map* map, Entity* enemies, int enemyCount, Entity* sword, Entity* player);
     void Render(ShaderProgram* program);
     
     void Jump();
-	void Attack();
+	void Attack(Entity* sword);
     
     void AI(Entity& player, Entity* hazards, int hazard_count, Map* map);
     void AISpiker(Entity player, Entity* hazards, int hazard_count, Map* map);
@@ -118,9 +132,9 @@ public:
     bool facingLeft();
     int stepping();
     
-    void animate(float deltaTime);
+    void animate(float deltaTime, Entity* sword);
 	void animateHz(float deltaTime);
-	void animateSw(float deltaTime);
+	void animateSw(float deltaTime, Entity* player);
     
     bool collidedTop;
     bool collidedBottom;

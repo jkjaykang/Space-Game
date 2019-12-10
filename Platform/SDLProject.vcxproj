@@ -150,16 +150,17 @@
   <ItemGroup>
     <Image Include="bomb.png" />
     <Image Include="bullet.png" />
-    <Image Include="bullet_temp.png" />
-    <Image Include="complete.png" />
+    <Image Include="dead.png" />
     <Image Include="fly.png" />
     <Image Include="font.png" />
+    <Image Include="gunner.png" />
     <Image Include="jackson1.png" />
     <Image Include="me.png" />
     <Image Include="papa.png" />
     <Image Include="papa_evil.png" />
     <Image Include="slash.png" />
     <Image Include="spike.png" />
+    <Image Include="spiker.png" />
     <Image Include="temp.png" />
     <Image Include="test.png" />
     <Image Include="tileset.png" />
@@ -167,11 +168,13 @@
   </ItemGroup>
   <ItemGroup>
     <Media Include="background.mp3" />
-    <Media Include="damage_1.wav" />
-    <Media Include="fall_1.wav" />
     <Media Include="footstep.wav" />
+    <Media Include="hit.wav" />
+    <Media Include="jump.wav" />
     <Media Include="jump_1.wav" />
     <Media Include="jump_2.wav" />
+    <Media Include="music.mp3" />
+    <Media Include="slash.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

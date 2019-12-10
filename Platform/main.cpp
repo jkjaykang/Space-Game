@@ -38,12 +38,13 @@ GLuint fontTextureID;
 Scene* currentScene;
 Scene* sceneList[2];
 
-Mix_Music* background_1;
+Mix_Music* music;
 
 Mix_Chunk* jump_1;
 Mix_Chunk* jump_2;
 
 Mix_Chunk* footstep;
+Mix_Chunk* slash;
 
 Mix_Chunk* fall_1;
 
@@ -66,8 +67,9 @@ void Initialize() {
     
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096);
     
-    background_1 = Mix_LoadMUS("background.mp3");
-    //Mix_PlayMusic(background_1, -1);
+    music = Mix_LoadMUS("music.mp3");
+    Mix_PlayMusic(music, -1);
+	Mix_VolumeMusic(MIX_MAX_VOLUME / 2);
     
     jump_1 = Mix_LoadWAV("jump_1.wav");
     jump_2 = Mix_LoadWAV("jump_2.wav");
@@ -75,6 +77,7 @@ void Initialize() {
     fall_1 = Mix_LoadWAV("fall_1.wav");
     
     footstep = Mix_LoadWAV("footstep.wav");
+	//slash = Mix_LoadWAV("slash.wav");
     
     
 #ifdef _WINDOWS
@@ -128,33 +131,32 @@ void ProcessInput() {
                 switch (event.key.keysym.sym) {
                     case SDLK_SPACE:
                     {
-                        currentScene->state.player.Jump();
-                        int random = rand() % 2;
-                        if (random > 0 && currentScene->state.player.isActive)
-                        {
-                            //Mix_PlayChannel(-1, jump_1, 0);
-                        }
-                        else if (currentScene->state.player.isActive)
-                        {
-                            //Mix_PlayChannel(-1, jump_2, 0);
-                        }
+						if (currentScene->state.player.isActive)
+						{
+							currentScene->state.player.Jump();
+						}
+                        
                     }
                         break;
                     
                     case SDLK_f:
-						currentScene->state.player.Attack();
+						if (currentScene->state.player.isActive)
+						{
+							currentScene->state.player.Attack(&currentScene->state.sword);
+						}
                         /*if(currentScene->state.player.timer == 50.0f){
+							currentScene->state.player.attacking = true;
                             currentScene->state.player.timer -= 1.0f;
-                            currentScene->sword.timer -= 1.0f;
-                            currentScene->sword.isActive = true;
-                            currentScene->sword.position = currentScene -> state.player.position;
+                            currentScene->state.sword.timer -= 1.0f;
+                            currentScene->state.sword.isActive = true;
+                            currentScene->state.sword.position = currentScene -> state.player.position;
 							if (currentScene->state.player.facingLeft())
 							{
-								currentScene->sword.position.x -= 0.5f;
+								currentScene->state.sword.position.x -= 0.8f;
 							}
 							else
 							{
-								currentScene->sword.position.x += 0.5f;
+								currentScene->state.sword.position.x += 0.8f;
 							}
                         }*/
                         
@@ -172,32 +174,45 @@ void ProcessInput() {
                         //currentScene->state.player.isActive = false;
                         effects->Start(SHAKE, 2.0f);
                         break;
+
+					case SDLK_r:
+						sceneList[1] = new Level1();
+						currentScene->state.nextLevel = 1;
+						SwitchToScene(sceneList[currentScene->state.nextLevel]);
+						break;
                 }
                 break;
         }
     }
     
-    currentScene->state.player.velocity.x = 0;
+	if (currentScene->state.player.isActive)
+	{
+		currentScene->state.player.velocity.x = 0;
+	}
+	
     //currentScene->state.player.velocity.x -= currentScene->state.player.velocity.x/2;
     // Check for pressed/held keys below
     const Uint8 *keys = SDL_GetKeyboardState(NULL);
+	if (currentScene->state.player.isActive)
+	{
+		if (keys[SDL_SCANCODE_A] && keys[SDL_SCANCODE_LSHIFT])
+		{
+			currentScene->state.player.velocity.x = -5.0f;
+		}
+		else if (keys[SDL_SCANCODE_D] && keys[SDL_SCANCODE_LSHIFT])
+		{
+			currentScene->state.player.velocity.x = 5.0f;
+		}
+		else if (keys[SDL_SCANCODE_A])
+		{
+			currentScene->state.player.velocity.x = -3.0f;
+		}
+		else if (keys[SDL_SCANCODE_D])
+		{
+			currentScene->state.player.velocity.x = 3.0f;
+		}
+	}
     
-    if (keys[SDL_SCANCODE_A] && keys[SDL_SCANCODE_LSHIFT])
-    {
-        currentScene->state.player.velocity.x = -5.0f;
-    }
-    else if (keys[SDL_SCANCODE_D] && keys[SDL_SCANCODE_LSHIFT])
-    {
-        currentScene->state.player.velocity.x = 5.0f;
-    }
-    else if (keys[SDL_SCANCODE_A])
-    {
-        currentScene->state.player.velocity.x = -3.0f;
-    }
-    else if  (keys[SDL_SCANCODE_D])
-    {
-        currentScene->state.player.velocity.x = 3.0f;
-    }
 }
 
 #define FIXED_TIMESTEP 0.0166666f
@@ -263,7 +278,7 @@ void Render() {
     
     if (currentScene == sceneList[0])
     {
-        Util::DrawText(&program, fontTextureID, "Return of the King", 0.4f, 0.1f, glm::vec3(0.8f, -2, 0));
+        Util::DrawText(&program, fontTextureID, "Space Game", 0.4f, 0.1f, glm::vec3(0.8f, -2, 0));
         Util::DrawText(&program, fontTextureID, "press enter to start", 0.3f, 0.1f, glm::vec3(1.0f, -4, 0));
     }
     std::string s = std::to_string(lives);
@@ -281,7 +296,7 @@ void Render() {
 }
 
 void Shutdown() {
-    Mix_FreeMusic(background_1);
+    Mix_FreeMusic(music);
     Mix_FreeChunk(jump_1);
     Mix_FreeChunk(jump_2);
     Mix_FreeChunk(fall_1);

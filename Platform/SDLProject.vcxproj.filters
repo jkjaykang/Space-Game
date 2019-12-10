@@ -88,9 +88,6 @@
     <Image Include="test.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="complete.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="temp.png">
       <Filter>Resource Files</Filter>
     </Image>
@@ -106,9 +103,6 @@
     <Image Include="spike.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="bullet_temp.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="papa.png">
       <Filter>Resource Files</Filter>
     </Image>
@@ -118,14 +112,17 @@
     <Image Include="slash.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="spiker.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="gunner.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="dead.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
-    <Media Include="damage_1.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
-    <Media Include="fall_1.wav">
-      <Filter>Resource Files</Filter>
-    </Media>
     <Media Include="jump_1.wav">
       <Filter>Resource Files</Filter>
     </Media>
@@ -136,6 +133,18 @@
       <Filter>Resource Files</Filter>
     </Media>
     <Media Include="footstep.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="jump.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="slash.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="hit.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="music.mp3">
       <Filter>Resource Files</Filter>
     </Media>
   </ItemGroup>
