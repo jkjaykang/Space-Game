@@ -4,7 +4,7 @@
 
 #define ENEMIES_COUNT 3
 //#define JOOMBA_COUNT 1
-#define HAZARD_COUNT 3
+#define HAZARD_COUNT 7
 
 
 unsigned int level1_data[] =
@@ -110,7 +110,12 @@ void Level1::Initialize() {
     
     state.hazards[0] = Entity("HAZARD", "BOMB", glm::vec3(3, -2.25, 0));
     state.hazards[1] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
-    state.hazards[2] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
+    state.hazards[2] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
+    state.hazards[3] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
+    state.hazards[4] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
+    state.hazards[5] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
+    state.hazards[6] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
+    
     
     /*
     state.hazards[0].entityType = HAZARD;
