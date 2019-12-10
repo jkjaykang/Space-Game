@@ -20,10 +20,10 @@
 //enum  EntityType { PLAYER, PLATFORM, ENEMY, AOE_DAMAGE, LIFE, HAZARD };
 enum  EntityType { PLAYER, PLATFORM, ENEMY, AOE_DAMAGE, LIFE, SWORD, HAZARD };
 //enum  lastCollisionEntityType { PLAYER, PLATFORM, ENEMY, BULLET, LETTER};
-enum AIState { IDLE, WALKING, RUNNING,  ATTACK };
-enum AIType { PAPARAZZI, JOOMBA, SPIKER, GUNNER, FLY, BOSS };
+enum AIState { IDLE, WALKING, RUNNING,  ATTACK, DRINK };
+enum AIType { SPIKER, GUNNER, FLY, BOSS };
 enum HazardState {DEPLOY, TICKING, EXPLODE};
-enum HazardType {BOMB, SPIKE, LASER};
+enum HazardType {BOMB, SPIKE, LASER, CAN};
 
 
 class Entity {
@@ -41,6 +41,9 @@ public:
     GLuint textureID;
     
     Mix_Chunk* footstep;
+    Mix_Chunk* slash;
+    Mix_Chunk* jump;
+    Mix_Chunk* hit;
     
     int cols;
     int rows;
@@ -55,6 +58,14 @@ public:
     int* runRight;
     int* runLeft;
     int* currentAnim;
+    
+    int* attack;
+    int* attackLeft;
+    
+    int* idle;
+    int* ticking;
+    int* exploding;
+    
     int animFrames;
     int animIndex;
     float animTime;
@@ -62,9 +73,9 @@ public:
     bool isActive;
     bool isInvincible;
     
-    int* idle;
-    int* ticking;
-    int* exploding;
+    //int* idle;
+    //int* ticking;
+    //int* exploding;
     
     glm::vec3 position;
     glm::vec3 velocity;
@@ -79,7 +90,13 @@ public:
     float timer;
     
     bool attacked;
+    bool attacking;
+    
+    
     bool reflected;
+    bool isAlive;
+    
+
     
     
     Entity();
@@ -97,11 +114,14 @@ public:
     void CheckCollisionsX(Entity* objects, int objectCount);
     void CheckCollisionsY(Entity* objects, int objectCount);
     
-    void Update(float deltaTime, Entity* objects, int objectCount, Entity* hazards, int hazard_count, Map* map, Entity* enemies, int enemyCount);
+    void Update(float deltaTime, Entity* objects, int objectCount, Entity* hazards, int hazard_count, Map* map, Entity* enemies, int enemyCount, Entity* sword, Entity* player);
+    
+    
+    
     void Render(ShaderProgram* program);
     
     void Jump();
-    void Attack();
+    void Attack(Entity* sword);
     void Knockback(Entity& obj, Entity& reference);
     
     void AI(Entity& player, Entity* hazards, int hazard_count, Map* map);
@@ -124,8 +144,9 @@ public:
     bool facingLeft();
     int stepping();
     
-    void animate(float deltaTime);
+    void animate(float deltaTime, Entity* sword);
     void animateHz(float deltaTime);
+    void animateSw(float deltaTime, Entity* player);
     
     bool collidedTop;
     bool collidedBottom;

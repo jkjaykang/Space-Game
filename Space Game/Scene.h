@@ -13,6 +13,7 @@
 #include "Map.h"
 struct GameState {
     Entity player;
+    Entity sword;
     Entity* enemies;
     Entity* hazards;
     Map* map;
@@ -21,7 +22,7 @@ struct GameState {
 class Scene {
 public:
     GameState state;
-    Entity sword;
+    //Entity sword;
     virtual void Initialize() = 0;
     virtual void Update(float deltaTime) = 0;
     virtual void Render(ShaderProgram* program) = 0;
