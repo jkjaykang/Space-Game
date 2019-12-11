@@ -188,32 +188,41 @@ Entity::Entity(std::string newEntityType, std::string newType, glm::vec3 newPosi
      reflected = false;
      */
 }
-
+/*
 void Entity::Knockback(Entity& player){
     
     std :: cout << "facingLeft" << player.facingLeft() << "vel-x " << velocity.x <<std :: endl;
     
     if(entityType == PLAYER){
-        if(player.facingLeft() && player.velocity.x <= 0){
+        if(player.facingLeft()){
             player.velocity = glm::vec3(-3, 4, 0);
+            std :: cout << "NEW vel-x " << player.velocity.x <<std :: endl;
         }
-        else if(!player.facingLeft() && player.velocity.x >= 0){
+        else if(!player.facingLeft()){
             player.velocity = glm::vec3(3, 4, 0);
+            std :: cout << "NEW vel-x " << player.velocity.x <<std :: endl;
         }
     }
 }
-/*
+ */
+
 void Entity::Knockback(Entity& obj, Entity& reference) {
-    std :: cout << "obj-x: " << obj.position.x << "ref-x: " << reference.position.x <<std :: endl;
-    std :: cout << obj.velocity.x << std :: endl;
+    std :: cout << "obj-x: " << obj.position.x << std :: endl << "ref-x: " << reference.position.x <<std :: endl;
+    std :: cout << obj.velocity.x << facingLeft() << std :: endl;
+    
     if (obj.position.x < reference.position.x) {
-        obj.velocity = glm::vec3(-3, 4, 0);
+        std :: cout <<  "LESS THAN " << std :: endl;
+        obj.velocity = glm::vec3(-3.0f, 4.0f, 0);
+        std :: cout <<  velocity.x << std :: endl;
     }
-    else {
-        obj.velocity = glm::vec3(3, 4, 0);
+    else if (obj.position.x > reference.position.x) {
+        std :: cout <<  "GREATER THAN " << std :: endl;
+        obj.velocity = glm::vec3(3.0f, 4.0f, 0);
+        obj.velocity.x = 3.0f;
+        std :: cout <<  velocity.x << std :: endl;
     }
 }
-*/
+
 
 bool Entity::CheckCollision(Entity& other)
 {
@@ -262,7 +271,19 @@ bool Entity::CheckCollision(Entity& other)
     
     if(entityType == PLAYER){
         if((other.hzType == LASER || other.hzType == CAN) && xdist < 0.1f && ydist < 0 && abs(velocity.x) >= 0 && currentAnim != attack){
-            Knockback(*this);//, other);
+            Knockback(*this, other);
+            /*
+            if(entityType == PLAYER){
+                if(facingLeft()){
+                    velocity = glm::vec3(-3, 4, 0);
+                    std :: cout << "NEW vel-x " << velocity.x <<std :: endl;
+                }
+                else if(!facingLeft()){
+                    velocity = glm::vec3(3, 4, 0);
+                    std :: cout << "NEW vel-x " << velocity.x <<std :: endl;
+                }
+            }
+             */
             return true;
         }
     }
@@ -282,7 +303,7 @@ bool Entity::CheckCollision(Entity& other)
             std :: cout << "CURR: PLAYER" << std :: endl;
             if (other.entityType == ENEMY)
             {
-                Knockback(*this);//, other);
+                Knockback(*this, other);
                 isActive = false;
                 //isAlive = false;
                 
@@ -291,13 +312,13 @@ bool Entity::CheckCollision(Entity& other)
             }
             if (other.entityType == HAZARD && other.hzType == SPIKE && other.hzState == EXPLODE) {
                 
-                Knockback(*this);//, other);
+                Knockback(*this, other);
                 isActive = false;
                 
                 //isActive = false;
             }
             if (other.entityType == HAZARD && other.hzType == BOMB && other.hzState == EXPLODE) {
-                Knockback(*this);//, other);
+                Knockback(*this, other);
                 isActive = false;
                 //isActive = false;
             }
@@ -305,13 +326,13 @@ bool Entity::CheckCollision(Entity& other)
                 return false;
             }
             if (other.entityType == HAZARD && other.hzType == LASER && other.hzState == EXPLODE) {
-                Knockback(*this);//, other);
+                Knockback(*this, other);
                 isActive = false;
                 //isActive = false;
             }
             if (other.entityType == HAZARD && other.hzType == CAN && other.hzState == EXPLODE) {
                 std :: cout << "HZ-CAN-EXPLODE -> PLAYER = FALSE" << std :: endl;
-                Knockback(*this);//, other);
+                Knockback(*this, other);
                 isActive = false;
                 //isActive = false;
             }
@@ -385,6 +406,7 @@ bool Entity::CheckCollision(Entity& other)
             if (other.entityType == ENEMY && reflected && hzType == LASER) {
                 other.isActive = false;
                 isActive = false;
+                reflected = false;
             }
             if (other.entityType == ENEMY && other.aiType != BOSS && reflected && hzType == BOMB && hzState == EXPLODE) {
                 other.isActive = false;
@@ -481,11 +503,14 @@ void Entity::CheckCollisionsX(Entity *objects, int objectCount)
                 position.x -= penetrationX;
                 
                 if(entityType == PLAYER && object.entityType == HAZARD && (object.hzType == LASER || object.hzType == CAN)){
+                    Knockback(*this, object);
                     isActive = false;
                     object.isActive = false;
                 }
+                else{
+                    velocity.x = 0;
+                }
                 
-                velocity.x = 0;
                 collidedRight = true;
                 
                 if (entityType == ENEMY && object.entityType == SWORD)
@@ -498,12 +523,15 @@ void Entity::CheckCollisionsX(Entity *objects, int objectCount)
                 position.x += penetrationX;
                 
                 if(entityType == PLAYER && object.entityType == HAZARD && (object.hzType == LASER || object.hzType == CAN)){
+                    Knockback(*this, object);
                     isActive = false;
                     object.isActive = false;
                 }
                 
                 
-                velocity.x = 0;
+                else{
+                    velocity.x = 0;
+                }
                 collidedLeft = true;
                 
                 if (entityType == ENEMY && object.entityType == SWORD)
@@ -514,6 +542,7 @@ void Entity::CheckCollisionsX(Entity *objects, int objectCount)
             }
             else if(velocity.x == 0){
                 if(entityType == PLAYER && object.entityType == HAZARD && (object.hzType == LASER || object.hzType == CAN)){
+                    Knockback(*this, object);
                     isActive = false;
                     object.isActive = false;
                 }
@@ -816,7 +845,7 @@ void Entity::AISpiker(Entity player, Entity* hazards, int hazard_count, float de
             }
             
             if ((glm::distance(position, player.position) <= 7.5f)) {
-                if ((glm::distance(position, player.position) < 2.5f) && timer >= 1.0f) {
+                if ((glm::distance(position, player.position) < 4.0f) && timer >= 1.0f) {
                     aiState = ATTACK;
                     timer = 0.0f;
                 }

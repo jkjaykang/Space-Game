@@ -1,22 +1,22 @@
 #include "Level1.h"
-#define LEVEL1_WIDTH 70
+#define LEVEL1_WIDTH 73
 #define LEVEL1_HEIGHT 8
 
-#define ENEMIES_COUNT 4
+#define ENEMIES_COUNT 11
 //#define JOOMBA_COUNT 1
-#define HAZARD_COUNT 15
+#define HAZARD_COUNT 25
 
 
 unsigned int level1_data[] =
 {
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,2,0,0,0,0,0,0,0,0,0,0,0,0,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,1,2,0,0,0,0,0,0,0,1,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,0,0,0,0,0,0,0,0,0,0,0,0,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,1,2,2,0,0,0,0,0,0,1,2,2,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,1,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,
-    3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,2,2,2,1,1,1,1,1,1,2,2,2,2,2,1,1,1,1,1,0,1,1,1,0,1,1,1,1,1,2,2,2,1,1,1,1,1,1,1,1,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-    3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
+    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,
+    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,
+    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,
+    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,2,0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,
+    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,1,2,0,0,0,0,0,0,0,1,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,
+    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,1,2,2,0,0,0,0,0,0,1,2,2,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,1,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,3,3,3,
+    3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,2,2,2,1,1,1,1,1,1,2,2,2,2,2,1,1,1,1,1,0,1,1,1,0,1,1,1,1,1,2,2,2,1,1,1,1,1,1,1,1,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,3,3,
+    3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3
 };
 
 Entity level1_enemies[ENEMIES_COUNT];
@@ -33,7 +33,8 @@ void Level1::Initialize() {
     state.player.height = 1.0f;
     state.player.width = 0.5f;
     
-    state.player.position = glm::vec3(1, -2, 0);
+    //state.player.position = glm::vec3(1, -2, 0);
+    state.player.position = glm::vec3(2, -2, 0);
     state.player.acceleration = glm::vec3(0, -6.81f, 0);
     state.player.textureID = Util::LoadTexture("temp.png");
     state.player.cols = 16;
@@ -77,14 +78,19 @@ void Level1::Initialize() {
     //state.enemies[1] = Entity("ENEMY", "SPIKER", glm::vec3(13.0f, -3.25f, 0));
     //state.enemies[2] = Entity("ENEMY", "GUNNER", glm::vec3(15.0f, -3.25f, 0));
     
-    state.enemies[0] = Entity("ENEMY", "BOSS", glm::vec3(8.0f, -3.25f, 0));
-    /*
+    state.enemies[0] = Entity("ENEMY", "GUNNER", glm::vec3(9.25f, -3.25f, 0));
     state.enemies[1] = Entity("ENEMY", "GUNNER", glm::vec3(20.0f, -3.25f, 0));
-    
     state.enemies[2] = Entity("ENEMY", "SPIKER", glm::vec3(34.0f, -3.25f, 0));
+    state.enemies[3] = Entity("ENEMY", "SPIKER", glm::vec3(39.0f, -3.25f, 0));
+    state.enemies[4] = Entity("ENEMY", "FLY", glm::vec3(18.0f, -0.35f, 0));
+    state.enemies[5] = Entity("ENEMY", "FLY", glm::vec3(12.0f, -0.35f, 0));
+    state.enemies[6] = Entity("ENEMY", "GUNNER", glm::vec3(55.0f, -3.25f, 0));
+    state.enemies[7] = Entity("ENEMY", "BOSS", glm::vec3(60.0f, -3.25f, 0));
     
-    state.enemies[3] = Entity("ENEMY", "FLY", glm::vec3(16.0f, -0.35f, 0));
-     */
+    state.enemies[8] = Entity("ENEMY", "SPIKER", glm::vec3(39.0f, -3.25f, 0));
+    state.enemies[9] = Entity("ENEMY", "SPIKER", glm::vec3(8.0f, -3.25f, 0));
+    state.enemies[10] = Entity("ENEMY", "SPIKER", glm::vec3(50.0f, -0.25f, 0));
+    
     //state.enemies[3] = Entity("ENEMY", "SPIKER", glm::vec3(2.0f, -3.25f, 0));
     
     state.hazards = level1_hazards;
@@ -92,8 +98,6 @@ void Level1::Initialize() {
     //state.hazards[0] = Entity("HAZARD", "BOMB", glm::vec3(3, -2.25, 0));
     //state.hazards[1] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
     //state.hazards[2] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
-    
-    
     state.hazards[0] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
     state.hazards[1] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
     state.hazards[2] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
@@ -105,30 +109,30 @@ void Level1::Initialize() {
     state.hazards[8] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
     state.hazards[9] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
     state.hazards[10] = Entity("HAZARD", "BOMB", glm::vec3(3, -2.25, 0));
+    state.hazards[11] = Entity("HAZARD", "BOMB", glm::vec3(3, -2.25, 0));
+    state.hazards[12] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
+    state.hazards[13] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
+    state.hazards[14] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
     
-    state.hazards[11] = Entity("HAZARD", "CAN", glm::vec3(3, -2.25, 0));
-    state.hazards[12] = Entity("HAZARD", "CAN", glm::vec3(3, -2.25, 0));
-    state.hazards[13] = Entity("HAZARD", "CAN", glm::vec3(3, -2.25, 0));
-    state.hazards[14] = Entity("HAZARD", "CAN", glm::vec3(3, -2.25, 0));
+    state.hazards[15] = Entity("HAZARD", "CAN", glm::vec3(3, -2.25, 0));
+    state.hazards[16] = Entity("HAZARD", "CAN", glm::vec3(3, -2.25, 0));
+    state.hazards[17] = Entity("HAZARD", "CAN", glm::vec3(3, -2.25, 0));
+    state.hazards[18] = Entity("HAZARD", "CAN", glm::vec3(3, -2.25, 0));
     
+    state.hazards[19] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
+    state.hazards[20] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
     
-    //state.enemies[0].hazardList.push_back(&state.hazards[0]);
-    //state.enemies[0].hazardList.push_back(&state.hazards[1]);
-    //state.enemies[0].hazardList.push_back(&state.hazards[2]);
+    state.hazards[21] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
+    state.hazards[22] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
     
+    state.hazards[23] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
+    state.hazards[24] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
+
     
+    state.enemies[0].hazardList.push_back(&state.hazards[0]);
+    state.enemies[0].hazardList.push_back(&state.hazards[1]);
+    state.enemies[0].hazardList.push_back(&state.hazards[2]);
     
-    state.enemies[0].hazardList.push_back(&state.hazards[11]);
-    state.enemies[0].hazardList.push_back(&state.hazards[12]);
-    state.enemies[0].hazardList.push_back(&state.hazards[13]);
-    state.enemies[0].hazardList.push_back(&state.hazards[14]);
-    
-    
-    /*
-    //state.enemies[0].hazardList.push_back(&state.hazards[0]);
-    //state.enemies[0].hazardList.push_back(&state.hazards[1]);
-    //state.enemies[0].hazardList.push_back(&state.hazards[2]);
-    /*
     state.enemies[1].hazardList.push_back(&state.hazards[3]);
     state.enemies[1].hazardList.push_back(&state.hazards[4]);
     state.enemies[1].hazardList.push_back(&state.hazards[5]);
@@ -136,9 +140,32 @@ void Level1::Initialize() {
     state.enemies[2].hazardList.push_back(&state.hazards[6]);
     state.enemies[2].hazardList.push_back(&state.hazards[7]);
     
-    state.enemies[3].hazardList.push_back(&state.hazards[10]);
-    //state.enemies[3].hazardList.push_back(&state.hazards[9]);
-    */
+    state.enemies[3].hazardList.push_back(&state.hazards[8]);
+    state.enemies[3].hazardList.push_back(&state.hazards[9]);
+    
+    state.enemies[4].hazardList.push_back(&state.hazards[10]);
+    
+    state.enemies[5].hazardList.push_back(&state.hazards[11]);
+    
+    state.enemies[6].hazardList.push_back(&state.hazards[12]);
+    state.enemies[6].hazardList.push_back(&state.hazards[13]);
+    state.enemies[6].hazardList.push_back(&state.hazards[14]);
+    
+    state.enemies[7].hazardList.push_back(&state.hazards[15]);
+    state.enemies[7].hazardList.push_back(&state.hazards[16]);
+    state.enemies[7].hazardList.push_back(&state.hazards[17]);
+    state.enemies[7].hazardList.push_back(&state.hazards[18]);
+    
+    state.enemies[8].hazardList.push_back(&state.hazards[19]);
+    state.enemies[8].hazardList.push_back(&state.hazards[20]);
+    
+    state.enemies[9].hazardList.push_back(&state.hazards[21]);
+    state.enemies[9].hazardList.push_back(&state.hazards[22]);
+    
+    state.enemies[10].hazardList.push_back(&state.hazards[23]);
+    state.enemies[10].hazardList.push_back(&state.hazards[24]);
+    
+    
     
 }
 
