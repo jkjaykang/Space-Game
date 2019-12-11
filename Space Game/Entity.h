@@ -100,7 +100,7 @@ public:
     Entity(std::string newEntityType, std::string newType, glm::vec3 newPosition);
     
     
-    void Knockback(Entity& obj, Entity& reference);
+    //void Knockback(Entity& obj, Entity& reference);
     
     bool CheckCollision(Entity& other);
     
@@ -120,6 +120,7 @@ public:
     
     void Jump();
     void Attack(Entity* sword);
+    void Knockback(Entity& player);
     
     void AI(Entity& player, Entity* hazards,  int hazard_count, float deltaTime, Map* map);
     void AISpiker(Entity player, Entity* hazards, int hazard_count, float deltaTime, Map* map);

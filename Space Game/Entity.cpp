@@ -152,8 +152,8 @@ Entity::Entity(std::string newEntityType, std::string newType, glm::vec3 newPosi
             //initialPosition = glm::vec3(3, -2.25, 0);
             
             timer = 10.0f;
-            width = 1.0f;
-            height = 1.0f;
+            width = .5f;
+            height = .5f;
         }
         else if (newType == "CAN") {
             entityType = HAZARD;
@@ -168,8 +168,8 @@ Entity::Entity(std::string newEntityType, std::string newType, glm::vec3 newPosi
             //initialPosition = glm::vec3(3, -2.25, 0);
             
             timer = 10.0f;
-            width = .2f;
-            height = .2f;
+            width = .5f;
+            height = .5f;
         }
     }
     
@@ -189,8 +189,23 @@ Entity::Entity(std::string newEntityType, std::string newType, glm::vec3 newPosi
      */
 }
 
-
+void Entity::Knockback(Entity& player){
+    
+    std :: cout << "facingLeft" << player.facingLeft() << "vel-x " << velocity.x <<std :: endl;
+    
+    if(entityType == PLAYER){
+        if(player.facingLeft() && player.velocity.x <= 0){
+            player.velocity = glm::vec3(-3, 4, 0);
+        }
+        else if(!player.facingLeft() && player.velocity.x >= 0){
+            player.velocity = glm::vec3(3, 4, 0);
+        }
+    }
+}
+/*
 void Entity::Knockback(Entity& obj, Entity& reference) {
+    std :: cout << "obj-x: " << obj.position.x << "ref-x: " << reference.position.x <<std :: endl;
+    std :: cout << obj.velocity.x << std :: endl;
     if (obj.position.x < reference.position.x) {
         obj.velocity = glm::vec3(-3, 4, 0);
     }
@@ -198,6 +213,7 @@ void Entity::Knockback(Entity& obj, Entity& reference) {
         obj.velocity = glm::vec3(3, 4, 0);
     }
 }
+*/
 
 bool Entity::CheckCollision(Entity& other)
 {
@@ -244,11 +260,14 @@ bool Entity::CheckCollision(Entity& other)
     }
     */
     
-    /*
-    if((other.hzType == LASER || other.hzType == CAN) && xdist < 0.1f && ydist < 0 && abs(velocity.x) >= 0){
-        return true;
+    if(entityType == PLAYER){
+        if((other.hzType == LASER || other.hzType == CAN) && xdist < 0.1f && ydist < 0 && abs(velocity.x) >= 0 && currentAnim != attack){
+            Knockback(*this);//, other);
+            return true;
+        }
     }
-    */
+    
+    
     
     
     if ((xdist < 0 && ydist < 0))
@@ -263,7 +282,7 @@ bool Entity::CheckCollision(Entity& other)
             std :: cout << "CURR: PLAYER" << std :: endl;
             if (other.entityType == ENEMY)
             {
-                Knockback(*this, other);
+                Knockback(*this);//, other);
                 isActive = false;
                 //isAlive = false;
                 
@@ -272,13 +291,13 @@ bool Entity::CheckCollision(Entity& other)
             }
             if (other.entityType == HAZARD && other.hzType == SPIKE && other.hzState == EXPLODE) {
                 
-                Knockback(*this, other);
+                Knockback(*this);//, other);
                 isActive = false;
                 
                 //isActive = false;
             }
             if (other.entityType == HAZARD && other.hzType == BOMB && other.hzState == EXPLODE) {
-                Knockback(*this, other);
+                Knockback(*this);//, other);
                 isActive = false;
                 //isActive = false;
             }
@@ -286,13 +305,13 @@ bool Entity::CheckCollision(Entity& other)
                 return false;
             }
             if (other.entityType == HAZARD && other.hzType == LASER && other.hzState == EXPLODE) {
-                Knockback(*this, other);
+                Knockback(*this);//, other);
                 isActive = false;
                 //isActive = false;
             }
             if (other.entityType == HAZARD && other.hzType == CAN && other.hzState == EXPLODE) {
                 std :: cout << "HZ-CAN-EXPLODE -> PLAYER = FALSE" << std :: endl;
-                Knockback(*this, other);
+                Knockback(*this);//, other);
                 isActive = false;
                 //isActive = false;
             }
@@ -583,6 +602,9 @@ void Entity::CheckCollisionsY(Map* map)
         if (entityType == PLAYER && isActive == false) {
             velocity = glm::vec3(0, 0, 0);
         }
+        if(entityType == HAZARD && hzType == CAN){
+            velocity = glm::vec3(0, 0, 0);
+        }
         /*
         if(entityType == ENEMY && aiType == BOSS){
             /
@@ -599,6 +621,9 @@ void Entity::CheckCollisionsY(Map* map)
         if (entityType == PLAYER && isActive == false) {
             velocity = glm::vec3(0, 0, 0);
         }
+        if(entityType == HAZARD && hzType == CAN){
+            velocity = glm::vec3(0, 0, 0);
+        }
         collidedTop = true;
     }
     else if (map->IsSolid(top_right, &penetration_x, &penetration_y) && velocity.y > 0) {
@@ -608,6 +633,9 @@ void Entity::CheckCollisionsY(Map* map)
             velocity = glm::vec3(0, 0, 0);
         }
         if (entityType == PLAYER && isActive == false) {
+            velocity = glm::vec3(0, 0, 0);
+        }
+        if(entityType == HAZARD && hzType == CAN){
             velocity = glm::vec3(0, 0, 0);
         }
         collidedTop = true;
@@ -622,6 +650,9 @@ void Entity::CheckCollisionsY(Map* map)
         if (entityType == PLAYER && isActive == false) {
             velocity = glm::vec3(0, 0, 0);
         }
+        if(entityType == HAZARD && hzType == CAN){
+            velocity = glm::vec3(0, 0, 0);
+        }
         collidedBottom = true;
     }
     else if (map->IsSolid(bottom_left, &penetration_x, &penetration_y) && velocity.y < 0) {
@@ -633,6 +664,9 @@ void Entity::CheckCollisionsY(Map* map)
         if (entityType == PLAYER && isActive == false) {
             velocity = glm::vec3(0, 0, 0);
         }
+        if(entityType == HAZARD && hzType == CAN){
+            velocity = glm::vec3(0, 0, 0);
+        }
         collidedBottom = true;
     }
     else if (map->IsSolid(bottom_right, &penetration_x, &penetration_y) && velocity.y < 0) {
@@ -642,6 +676,9 @@ void Entity::CheckCollisionsY(Map* map)
             velocity = glm::vec3(0, 0, 0);
         }
         if (entityType == PLAYER && isActive == false) {
+            velocity = glm::vec3(0, 0, 0);
+        }
+        if(entityType == HAZARD && hzType == CAN){
             velocity = glm::vec3(0, 0, 0);
         }
         collidedBottom = true;
@@ -968,17 +1005,17 @@ void Entity :: AIBoss(Entity& player, Entity* hazards, int hazard_count, float d
                         
                         if (player.position.x > position.x) {
                             hazardList[i]->position.x += 0.25f;
-                            //hazardList[i]->velocity = glm::vec3(6.0f, 4.0, 0);
-                            hazardList[i]->velocity = glm::vec3(6.0f, 0, 0);
-                            hazardList[i]->acceleration = glm::vec3(0.0f, 0, 0);
-                            //hazardList[i]->acceleration = glm::vec3(0.0f, -9.8, 0);
+                            hazardList[i]->velocity = glm::vec3(4.0f, 4.0, 0);
+                            //hazardList[i]->velocity = glm::vec3(6.0f, 0, 0);
+                            //hazardList[i]->acceleration = glm::vec3(0.0f, 0, 0);
+                            hazardList[i]->acceleration = glm::vec3(0.0f, -9.8, 0);
                         }
                         else {
                             hazardList[i]->position.x -= 0.25f;
-                            //hazardList[i]->velocity = glm::vec3(-6.0f, 4, 0);
-                            hazardList[i]->velocity = glm::vec3(-6.0f, 0, 0);
-                            hazardList[i]->acceleration = glm::vec3(0.0f, 0, 0);
-                            //hazardList[i]->acceleration = glm::vec3(0.0f, -9.8, 0);
+                            hazardList[i]->velocity = glm::vec3(-4.0f, 4, 0);
+                            //hazardList[i]->velocity = glm::vec3(-6.0f, 0, 0);
+                            //hazardList[i]->acceleration = glm::vec3(0.0f, 0, 0);
+                            hazardList[i]->acceleration = glm::vec3(0.0f, -9.8, 0);
                         }
                         Mix_PlayChannel(-1, laser, 0);
                         hazardList[i]->isActive = true;
