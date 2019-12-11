@@ -1,28 +1,27 @@
 #include "Level1.h"
-#define LEVEL1_WIDTH 49
+#define LEVEL1_WIDTH 70
 #define LEVEL1_HEIGHT 8
 
-#define ENEMIES_COUNT 1//3
+#define ENEMIES_COUNT 4
 //#define JOOMBA_COUNT 1
-#define HAZARD_COUNT 7
+#define HAZARD_COUNT 15
 
 
 unsigned int level1_data[] =
 {
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,1,2,0,0,0,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,1,2,2,0,0,0,0,0,0,0,0,1,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,2,2,2,1,1,1,1,1,1,1,1,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-    3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
+    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,
+    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,2,0,0,0,0,0,0,0,0,0,0,0,0,
+    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,0,1,2,0,0,0,0,0,0,0,1,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,2,0,0,0,0,0,0,0,0,0,0,0,0,
+    3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,1,2,2,0,0,0,0,0,0,1,2,2,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,1,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,
+    3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,2,2,2,1,1,1,1,1,1,2,2,2,2,2,1,1,1,1,1,0,1,1,1,0,1,1,1,1,1,2,2,2,1,1,1,1,1,1,1,1,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+    3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2
 };
 
 Entity level1_enemies[ENEMIES_COUNT];
 Entity level1_hazards[HAZARD_COUNT];
 
-//Entity sword;
 
 
 void Level1::Initialize() {
@@ -31,44 +30,11 @@ void Level1::Initialize() {
     state.player.entityType = PLAYER;
     state.player.isStatic = false;
     
+    state.player.height = 1.0f;
     state.player.width = 0.5f;
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    state.player.position = glm::vec3(6, -2, 0);
-    state.player.acceleration = glm::vec3(0, -9.81f, 0);
+    state.player.position = glm::vec3(1, -2, 0);
+    state.player.acceleration = glm::vec3(0, -6.81f, 0);
     state.player.textureID = Util::LoadTexture("temp.png");
     state.player.cols = 16;
     state.player.rows = 8;
@@ -103,86 +69,77 @@ void Level1::Initialize() {
     state.sword.currentAnim = state.sword.attack;
     state.sword.animFrames = 5;
     
-
-    
     
     
     state.enemies = level1_enemies;
     
-    state.enemies[0] = Entity("ENEMY", "SPIKER", glm::vec3(3, -0.35f, 0));
+    //state.enemies[0] = Entity("ENEMY", "FLY", glm::vec3(3, -0.35f, 0));
     //state.enemies[1] = Entity("ENEMY", "SPIKER", glm::vec3(13.0f, -3.25f, 0));
     //state.enemies[2] = Entity("ENEMY", "GUNNER", glm::vec3(15.0f, -3.25f, 0));
+    
+    state.enemies[0] = Entity("ENEMY", "BOSS", glm::vec3(8.0f, -3.25f, 0));
+    /*
+    state.enemies[1] = Entity("ENEMY", "GUNNER", glm::vec3(20.0f, -3.25f, 0));
+    
+    state.enemies[2] = Entity("ENEMY", "SPIKER", glm::vec3(34.0f, -3.25f, 0));
+    
+    state.enemies[3] = Entity("ENEMY", "FLY", glm::vec3(16.0f, -0.35f, 0));
+     */
+    //state.enemies[3] = Entity("ENEMY", "SPIKER", glm::vec3(2.0f, -3.25f, 0));
+    
     state.hazards = level1_hazards;
     
-    state.hazards[0] = Entity("HAZARD", "BOMB", glm::vec3(3, -2.25, 0));
-    state.hazards[1] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
-    state.hazards[2] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
-    state.hazards[3] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
+    //state.hazards[0] = Entity("HAZARD", "BOMB", glm::vec3(3, -2.25, 0));
+    //state.hazards[1] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
+    //state.hazards[2] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
+    
+    
+    state.hazards[0] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
+    state.hazards[1] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
+    state.hazards[2] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
+    state.hazards[3] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
     state.hazards[4] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
     state.hazards[5] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
-    state.hazards[6] = Entity("HAZARD", "LASER", glm::vec3(3, -2.25, 0));
+    state.hazards[6] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
+    state.hazards[7] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
+    state.hazards[8] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
+    state.hazards[9] = Entity("HAZARD", "SPIKE", glm::vec3(3, -2.25, 0));
+    state.hazards[10] = Entity("HAZARD", "BOMB", glm::vec3(3, -2.25, 0));
+    
+    state.hazards[11] = Entity("HAZARD", "CAN", glm::vec3(3, -2.25, 0));
+    state.hazards[12] = Entity("HAZARD", "CAN", glm::vec3(3, -2.25, 0));
+    state.hazards[13] = Entity("HAZARD", "CAN", glm::vec3(3, -2.25, 0));
+    state.hazards[14] = Entity("HAZARD", "CAN", glm::vec3(3, -2.25, 0));
+    
+    
+    //state.enemies[0].hazardList.push_back(&state.hazards[0]);
+    //state.enemies[0].hazardList.push_back(&state.hazards[1]);
+    //state.enemies[0].hazardList.push_back(&state.hazards[2]);
+    
+    
+    
+    state.enemies[0].hazardList.push_back(&state.hazards[11]);
+    state.enemies[0].hazardList.push_back(&state.hazards[12]);
+    state.enemies[0].hazardList.push_back(&state.hazards[13]);
+    state.enemies[0].hazardList.push_back(&state.hazards[14]);
     
     
     /*
-    state.hazards[0].entityType = HAZARD;
-    state.hazards[0].hzType = BOMB;
-    state.hazards[0].hzState = DEPLOY;
-    state.hazards[0].textureID = Util::LoadTexture("bomb.png");
-    state.hazards[0].rows = 3;
-    state.hazards[0].cols = 4;
-    state.hazards[0].idle = new int[4]{1, 2, 3, 4};
-    state.hazards[0].exploding = new int[4]{5, 6, 7, 8};
-    state.hazards[0].ticking = new int[4]{ 9, 10, 11, 12 };
-    state.hazards[0].acceleration = glm::vec3(0, -9.81f, 0);
-    state.hazards[0].isStatic = false;
-    state.hazards[0].isActive = false;
-    state.hazards[0].position = glm::vec3(3, -2.25, 0);
-    state.hazards[0].velocity = glm::vec3(0, -1, 0);
-    state.hazards[0].initialPosition = glm::vec3(3, -2.25, 0);
+    //state.enemies[0].hazardList.push_back(&state.hazards[0]);
+    //state.enemies[0].hazardList.push_back(&state.hazards[1]);
+    //state.enemies[0].hazardList.push_back(&state.hazards[2]);
+    /*
+    state.enemies[1].hazardList.push_back(&state.hazards[3]);
+    state.enemies[1].hazardList.push_back(&state.hazards[4]);
+    state.enemies[1].hazardList.push_back(&state.hazards[5]);
     
-    state.hazards[0].timer = 3.0f;
+    state.enemies[2].hazardList.push_back(&state.hazards[6]);
+    state.enemies[2].hazardList.push_back(&state.hazards[7]);
     
-    state.hazards[0].currentAnim = state.hazards[0].idle;
-    state.hazards[0].animFrames = 3;
-    state.hazards[0].animIndex = 0;
+    state.enemies[3].hazardList.push_back(&state.hazards[10]);
+    //state.enemies[3].hazardList.push_back(&state.hazards[9]);
+    */
     
-    state.hazards[1].entityType = HAZARD;
-    state.hazards[1].hzType = SPIKE;
-    state.hazards[1].hzState = TICKING;
-    state.hazards[1].textureID = Util::LoadTexture("spike.png");
-    state.hazards[1].acceleration = glm::vec3(0, -9.81f, 0);
-    state.hazards[1].isStatic = false;
-    state.hazards[1].isActive = false;
-    state.hazards[1].position = glm::vec3(3, -2.25, 0);
-    state.hazards[1].velocity = glm::vec3(0, -1, 0);
-    //state.hazards[1].initialPosition = glm::vec3(3, -2.25, 0);
-    state.hazards[1].timer = 5.0f;
-    
-    state.hazards[1].rows = 3;
-    state.hazards[1].cols = 4;
-    state.hazards[1].idle = new int[4]{ 9, 10, 11, 12 };
-    state.hazards[1].exploding = new int[4]{ 1, 2, 3, 4 };
-    state.hazards[1].ticking = new int[4]{ 5, 6, 7, 8 };
-    
-    state.hazards[1].currentAnim = state.hazards[1].idle;
-    state.hazards[1].animFrames = 3;
-    state.hazards[1].animIndex = 0;
-    
-    state.hazards[2].entityType = HAZARD;
-    state.hazards[2].hzType = LASER;
-    state.hazards[2].hzState = EXPLODE;
-    state.hazards[2].textureID = Util::LoadTexture("bullet.png");
-    state.hazards[2].acceleration = glm::vec3(0, 0, 0);
-    state.hazards[2].isStatic = false;
-    state.hazards[2].isActive = false;
-    state.hazards[2].position = glm::vec3(3, -2.25, 0);
-    state.hazards[2].velocity = glm::vec3(0, 0, 0);
-    //state.hazards[2].initialPosition = glm::vec3(3, -2.25, 0);
-
-    state.hazards[2].timer = 10.0f;
-    state.hazards[2].width = 0.4f;
-    state.hazards[2].height = 0.4f;
-     */
 }
 
 void Level1::Update(float deltaTime) {
@@ -190,15 +147,10 @@ void Level1::Update(float deltaTime) {
     state.sword.Update(deltaTime, &(state.player), 1, state.hazards, HAZARD_COUNT, state.map, state.enemies, ENEMIES_COUNT, &state.sword, &state.player);
     for (int i = 0; i < ENEMIES_COUNT; ++i) {
         state.enemies[i].Update(deltaTime, &state.player, 1, state.hazards, HAZARD_COUNT, state.map, state.enemies, ENEMIES_COUNT, &state.sword, &state.player);
-        
     }
     for (int i = 0; i < HAZARD_COUNT; ++i) {
         state.hazards[i].Update(deltaTime, &state.player, 1, state.hazards, HAZARD_COUNT, state.map, state.enemies, ENEMIES_COUNT, &state.sword, &state.player);
-        
     }
-    
-    
-    
 }
 void Level1::Render(ShaderProgram* program) {
     state.map->Render(program);
@@ -221,4 +173,4 @@ void Level1::Render(ShaderProgram* program) {
     }
     
     
-    }
+}

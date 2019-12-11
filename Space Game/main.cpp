@@ -70,7 +70,6 @@ void Initialize() {
     music = Mix_LoadMUS("music.mp3");
     Mix_PlayMusic(music, -1);
     Mix_VolumeMusic(MIX_MAX_VOLUME / 2);
-    //Mix_PlayMusic(background_1, -1);
     
     jump_1 = Mix_LoadWAV("jump_1.wav");
     jump_2 = Mix_LoadWAV("jump_2.wav");
@@ -136,9 +135,10 @@ void ProcessInput() {
                         {
                             currentScene->state.player.Jump();
                         }
+                        
                     }
                         break;
-                    
+                        
                     case SDLK_f:
                         if (currentScene->state.player.isActive)
                         {
@@ -159,8 +159,6 @@ void ProcessInput() {
                          currentScene->state.sword.position.x += 0.8f;
                          }
                          }*/
-                        
-                        break;
                         
                         break;
                         
@@ -186,30 +184,35 @@ void ProcessInput() {
                 break;
         }
     }
-    if(currentScene->state.player.isActive){
+    
+    if (currentScene->state.player.isActive)
+    {
         currentScene->state.player.velocity.x = 0;
     }
     
     //currentScene->state.player.velocity.x -= currentScene->state.player.velocity.x/2;
     // Check for pressed/held keys below
     const Uint8 *keys = SDL_GetKeyboardState(NULL);
+    if (currentScene->state.player.isActive)
+    {
+        if (keys[SDL_SCANCODE_A] && keys[SDL_SCANCODE_LSHIFT] && currentScene->state.player.velocity.y == 0 )
+        {
+            currentScene->state.player.velocity.x = -5.0f;
+        }
+        else if (keys[SDL_SCANCODE_D] && keys[SDL_SCANCODE_LSHIFT] && currentScene->state.player.velocity.y == 0)
+        {
+            currentScene->state.player.velocity.x = 5.0f;
+        }
+        else if (keys[SDL_SCANCODE_A])
+        {
+            currentScene->state.player.velocity.x = -3.0f;
+        }
+        else if (keys[SDL_SCANCODE_D])
+        {
+            currentScene->state.player.velocity.x = 3.0f;
+        }
+    }
     
-    if (keys[SDL_SCANCODE_A] && keys[SDL_SCANCODE_LSHIFT] && currentScene->state.player.isActive)
-    {
-        currentScene->state.player.velocity.x = -5.0f;
-    }
-    else if (keys[SDL_SCANCODE_D] && keys[SDL_SCANCODE_LSHIFT] && currentScene->state.player.isActive)
-    {
-        currentScene->state.player.velocity.x = 5.0f;
-    }
-    else if (keys[SDL_SCANCODE_A] && currentScene->state.player.isActive)
-    {
-        currentScene->state.player.velocity.x = -3.0f;
-    }
-    else if  (keys[SDL_SCANCODE_D] && currentScene->state.player.isActive)
-    {
-        currentScene->state.player.velocity.x = 3.0f;
-    }
 }
 
 #define FIXED_TIMESTEP 0.0166666f
@@ -244,22 +247,13 @@ void Update() {
     
     if (currentScene->state.player.isActive == false)
     {
-        if(lives > 0){
-            lives = lives - 1;
-        }
-        
-        /*
-        for(int i = 0; i < 3; ++i){
-            currentScene -> state.enemies[i].velocity = glm::vec3(0,0,0);
-        }
-         */
+        lives = lives - 1;
     }
-    /*
-    if (currentScene->state.player.isActive == false)
-    {
-        currentScene->state.player.isActive = true;
-    }
-    */
+    /*if (currentScene->state.player.isActive == false)
+     {
+     currentScene->state.player.isActive = true;
+     }*/
+    
     
     viewMatrix = glm::mat4(1.0f);
     if (currentScene->state.player.position.x > 5) {
@@ -287,15 +281,6 @@ void Render() {
         Util::DrawText(&program, fontTextureID, "Space Game", 0.4f, 0.1f, glm::vec3(0.8f, -2, 0));
         Util::DrawText(&program, fontTextureID, "press enter to start", 0.3f, 0.1f, glm::vec3(1.0f, -4, 0));
     }
-    
-    if(!currentScene->state.player.isActive){
-        glm::vec3 player_position = currentScene -> state.player.position;
-        
-        
-        Util::DrawText(&program, fontTextureID, "You Lose", 0.5f, 0.1f, glm::vec3(player_position.x - 4.5f, player_position.y + 2.0f, 0));
-        Util::DrawText(&program, fontTextureID, "Press R to Start Again", 0.3f, 0.01f, glm::vec3(player_position.x- 4.5f, player_position.y + 1.0f, 0));
-    }
-    
     std::string s = std::to_string(lives);
     if (currentScene->state.player.position.x > 5) {
         Util::DrawText(&program, fontTextureID, s, 1.0f, 0.1f, glm::vec3(currentScene->state.player.position.x - 4.5f, -0.5, 0));
