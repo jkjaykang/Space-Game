@@ -39,6 +39,7 @@ Scene* currentScene;
 Scene* sceneList[2];
 
 Mix_Music* music;
+Mix_Music* cranberry;
 
 Mix_Chunk* jump_1;
 Mix_Chunk* jump_2;
@@ -51,6 +52,8 @@ Mix_Chunk* fall_1;
 Effects* effects;
 
 int lives;
+
+bool once = true;
 
 
 void SwitchToScene(Scene* scene) {
@@ -68,6 +71,7 @@ void Initialize() {
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096);
     
     music = Mix_LoadMUS("music.mp3");
+	cranberry = Mix_LoadMUS("cranberry.mp3");
     Mix_PlayMusic(music, -1);
 	Mix_VolumeMusic(MIX_MAX_VOLUME / 2);
     
@@ -139,7 +143,7 @@ void ProcessInput() {
                     }
                         break;
                     
-                    case SDLK_f:
+                    case SDLK_k:
 						if (currentScene->state.player.isActive)
 						{
 							currentScene->state.player.Attack(&currentScene->state.sword);
@@ -170,7 +174,7 @@ void ProcessInput() {
                         }
                         break;
                         
-                    case SDLK_k:
+                    case SDLK_n:
                         //currentScene->state.player.isActive = false;
                         effects->Start(SHAKE, 2.0f);
                         break;
@@ -179,6 +183,8 @@ void ProcessInput() {
 						sceneList[1] = new Level1();
 						currentScene->state.nextLevel = 1;
 						SwitchToScene(sceneList[currentScene->state.nextLevel]);
+						Mix_PlayMusic(music, -1);
+						once = true;
 						break;
                 }
                 break;
@@ -245,9 +251,14 @@ void Update() {
     //    Mix_PlayChannel(-1, footstep, 0);
     //}
     
-    if (currentScene->state.player.isActive == false)
+    if (currentScene->state.player.position.x > 55.0f)
     {
         lives = lives - 1;
+		if (once == true)
+		{
+			Mix_PlayMusic(cranberry, -1);
+			once = false;
+		}
     }
     /*if (currentScene->state.player.isActive == false)
     {
@@ -278,15 +289,25 @@ void Render() {
     
     if (currentScene == sceneList[0])
     {
-        Util::DrawText(&program, fontTextureID, "Space Game", 0.4f, 0.1f, glm::vec3(0.8f, -2, 0));
+        Util::DrawText(&program, fontTextureID, "Space Game", 0.5f, 0.1f, glm::vec3(0.8f, -2, 0));
         Util::DrawText(&program, fontTextureID, "press enter to start", 0.3f, 0.1f, glm::vec3(1.0f, -4, 0));
     }
     std::string s = std::to_string(lives);
     if (currentScene->state.player.position.x > 5) {
-        Util::DrawText(&program, fontTextureID, s, 1.0f, 0.1f, glm::vec3(currentScene->state.player.position.x - 4.5f, -0.5, 0));
+        //Util::DrawText(&program, fontTextureID, s, 1.0f, 0.1f, glm::vec3(currentScene->state.player.position.x - 4.5f, -0.5, 0));
+		if (currentScene->state.player.isActive == false)
+		{
+			Util::DrawText(&program, fontTextureID, "Press R to restart", 0.3f, 0.1f, glm::vec3(currentScene->state.player.position.x - 2.5f, -2.5f, 0));
+		}
+		if (currentScene->state.player.isActive && currentScene->state.player.position.x >= 67)
+		{
+			Util::DrawText(&program, fontTextureID, "Happy Holidays", 0.3f, 0.1f, glm::vec3(currentScene->state.player.position.x - 2.0f, -2.5f, 0));
+		}
     }
     else {
-        Util::DrawText(&program, fontTextureID, s, 1.0f, 0.1f, glm::vec3(0.5f, -0.5, 0));
+		if (currentScene->state.player.isActive == false) {
+			Util::DrawText(&program, fontTextureID, "Press R to restart", 0.3f, 0.1f, glm::vec3(1.2f, -2.5f, 0));
+		}
     }
     //program.SetLightPosition(currentScene->state.player.position);
     program.SetLightPosition2(glm::vec3(8, 0, 0));

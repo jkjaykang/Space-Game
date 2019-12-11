@@ -150,10 +150,12 @@
   <ItemGroup>
     <Image Include="bomb.png" />
     <Image Include="bullet.png" />
+    <Image Include="can.png" />
     <Image Include="dead.png" />
     <Image Include="fly.png" />
     <Image Include="font.png" />
     <Image Include="gunner.png" />
+    <Image Include="lebron.png" />
     <Image Include="slash.png" />
     <Image Include="spike.png" />
     <Image Include="spiker.png" />
@@ -162,6 +164,7 @@
     <Image Include="tileset.png" />
   </ItemGroup>
   <ItemGroup>
+    <Media Include="cranberry.mp3" />
     <Media Include="explosion.wav" />
     <Media Include="footstep.wav" />
     <Media Include="hit.wav" />
@@ -169,6 +172,7 @@
     <Media Include="jump_1.wav" />
     <Media Include="jump_2.wav" />
     <Media Include="laser.wav" />
+    <Media Include="lebronAttack.wav" />
     <Media Include="music.mp3" />
     <Media Include="slash.wav" />
   </ItemGroup>

@@ -1,10 +1,2 @@
-﻿  Entity.cpp
-C:\Users\Jay\Desktop\Space-Game\Platform\Entity.cpp(609,30): warning C4018:  '<': signed/unsigned mismatch
-C:\Users\Jay\Desktop\Space-Game\Platform\Entity.cpp(668,21): warning C4018:  '<': signed/unsigned mismatch
-  Level1.cpp
-  Map.cpp
-C:\Users\Jay\Desktop\Space-Game\Platform\Entity.cpp(733,21): warning C4018:  '<': signed/unsigned mismatch
-C:\Users\Jay\Desktop\Space-Game\Platform\Map.cpp(58,16): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
-  Generating Code...
-C:\Users\Jay\Desktop\Space-Game\Platform\Map.cpp(59,16): warning C4244:  'initializing': conversion from 'float' to 'int', possible loss of data
-  SDLProject.vcxproj -> C:\Users\Jay\Desktop\Space-Game\Platform\Debug\SDLProject.exe
+﻿  Level1.cpp
+  SDLProject.vcxproj -> C:\Users\jayka\Desktop\Space-Game\Platform\Debug\SDLProject.exe

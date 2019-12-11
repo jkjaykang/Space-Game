@@ -106,6 +106,12 @@
     <Image Include="dead.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="can.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="lebron.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Media Include="jump_1.wav">
@@ -133,6 +139,12 @@
       <Filter>Resource Files</Filter>
     </Media>
     <Media Include="laser.wav">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="cranberry.mp3">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="lebronAttack.wav">
       <Filter>Resource Files</Filter>
     </Media>
   </ItemGroup>

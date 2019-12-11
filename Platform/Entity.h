@@ -19,10 +19,10 @@
 //enum  EntityType { PLAYER, PLATFORM, ENEMY, AOE_DAMAGE, LIFE, HAZARD };
 enum  EntityType { PLAYER, PLATFORM, ENEMY, AOE_DAMAGE, LIFE, SWORD, HAZARD };
 //enum  lastCollisionEntityType { PLAYER, PLATFORM, ENEMY, BULLET, LETTER};
-enum AIState { IDLE, WALKING, RUNNING, SLOW_DOWN, AOE, ATTACK };
+enum AIState { IDLE, WALKING, RUNNING, SLOW_DOWN, AOE, ATTACK, DEAD };
 enum AIType { PAPARAZZI, JOOMBA, SPIKER, GUNNER, FLY, BOSS };
 enum HazardState {DEPLOY, TICKING, EXPLODE};
-enum HazardType {BOMB, SPIKE, LASER};
+enum HazardType {BOMB, SPIKE, LASER, CAN};
 
 
 class Entity {
@@ -40,15 +40,16 @@ public:
     GLuint textureID;
     
     Mix_Chunk* footstep;
-	Mix_Chunk* slash;
-	Mix_Chunk* jump;
-	Mix_Chunk* hit;
-	Mix_Chunk* explosion;
-	Mix_Chunk* laser;
+    Mix_Chunk* slash;
+    Mix_Chunk* jump;
+    Mix_Chunk* hit;
+    Mix_Chunk* explosion;
+    Mix_Chunk* laser;
+	Mix_Chunk* lebronAttack;
     
     int cols;
     int rows;
-
+    
     int* idleRight;
     int* idleLeft;
     int* walkRight;
@@ -60,15 +61,16 @@ public:
     int* runRight;
     int* runLeft;
     int* currentAnim;
-	int* attack;
-	int* attackLeft;
-
-	int* idle;
-	int* ticking;
-	int* exploding;
-
+    int* attack;
+    int* attackLeft;
+    
+    int* idle;
+    int* ticking;
+    int* exploding;
+    
     int animFrames;
     int animIndex;
+    int lives;
     float animTime;
     bool isStatic;
     bool isActive;
@@ -78,9 +80,10 @@ public:
     glm::vec3 velocity;
     glm::vec3 acceleration;
     glm::vec3 initialPosition;
-	glm::vec3 scale;
+    glm::vec3 scale;
+	glm::vec3 scaleBs;
 
-	std::vector<Entity*> hazardList;
+    std::vector<Entity*> hazardList;
     
     float width;
     float height;
@@ -88,22 +91,24 @@ public:
     float speed;
     float timer;
     
-	bool attacked;
-	bool attacking;
-
-	bool isAlive;
-	
-	bool reflected;
+    bool attacked;
+    bool attacking;
     
+    bool isAlive;
+    
+    bool reflected;
+    
+	float mult;
+
     Entity();
-	Entity(std::string newEntityType, std::string newType, glm::vec3 newPosition);
-
+    Entity(std::string newEntityType, std::string newType, glm::vec3 newPosition);
     
-	void Knockback(Entity& obj, Entity& reference);
-
+    
+    //void Knockback(Entity& obj, Entity& reference);
+    
     bool CheckCollision(Entity& other);
-
-
+    
+    
     
     void CheckCollisionsX(Map* map);
     void CheckCollisionsY(Map* map);
@@ -118,29 +123,32 @@ public:
     void Render(ShaderProgram* program);
     
     void Jump();
-	void Attack(Entity* sword);
+    void Attack(Entity* sword);
+    void Knockback(Entity& player);
     
     void AI(Entity& player, Entity* hazards,  int hazard_count, float deltaTime, Map* map);
     void AISpiker(Entity player, Entity* hazards, int hazard_count, float deltaTime, Map* map);
     void AIGunner(Entity player, Entity* hazards,  int hazard_count, float deltaTime, Map* map);
     
-    void AIBoss(Entity player, Entity* hazards, int hazard_count,Map* map);
+    void AIBoss(Entity& player, Entity* hazards, int hazard_count, float deltaTime, Map* map);
     
     void AIFly(Entity player, Entity* hazards, int hazard_count, float deltaTime,Map* map);
     
     void HZ(Entity& player, float deltaTime, Map* map);
     void HZBomb(Entity player, float deltaTime, Map* map);
     void HZSpike(Entity player, float deltaTime, Map* map);
-	void HZLaser(Entity player, float deltaTime, Map* map);
-
+    void HZLaser(Entity player, float deltaTime, Map* map);
+    void HZCan(Entity player, float deltaTime, Map* map);
+    
     void DrawSpriteFromTextureAtlas(ShaderProgram* program, int index);
     
     bool facingLeft();
     int stepping();
     
     void animate(float deltaTime, Entity* sword);
-	void animateHz(float deltaTime);
-	void animateSw(float deltaTime, Entity* player);
+    void animateHz(float deltaTime);
+    void animateSw(float deltaTime, Entity* player);
+	void animateBs(float deltaTime);
     
     bool collidedTop;
     bool collidedBottom;
